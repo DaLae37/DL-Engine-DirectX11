@@ -6,9 +6,7 @@ INT WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	std::unique_ptr<Application> application = std::make_unique<Application>(hInstance, nCmdShow);
 
-	HRESULT result = application->InitApplication();
-
-	if (result == S_OK) {
+	if (application->InitApplication() == S_OK) {
 		INT msg = application->DoMainLoop();
 		return msg;
 	}

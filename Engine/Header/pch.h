@@ -1,9 +1,10 @@
 #pragma once
 //Project Setting
-#define LANGUAGE "kor" // std::locale parameter
+#define LOCALE "kor" // std::locale parameter
+#define CURRENT_LANGUAGE = MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL)
 
 //Program Setting
-#define PROGRAM_NAME TEXT("Engine")
+#define PROGRAM_NAME TEXT("DL-Engine")
 #define CONSOLE_NAME TEXT("Console")
 
 //라이브러리
@@ -24,6 +25,7 @@
 
 //디버그 헤더
 #include <iostream>
+#include <string>
 #include <io.h>
 #include <fcntl.h>
 

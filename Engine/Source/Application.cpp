@@ -13,8 +13,18 @@ Application::~Application() {
 HRESULT Application::InitApplication() {
 	InitDeltaTime();
 
-	window->InitWindow();
-	window->FloatWindow();
+	if (window->InitWindow() != S_OK) {
+		std::wstring message = L"Init Window Failed\n" + std::to_wstring(GetLastError());
+		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
+		return E_FAIL;
+	}
+	if (window->FloatWindow() != S_OK) {
+		std::wstring message = L"Float Window Failed\n" + std::to_wstring(GetLastError());
+		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
+		return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 int Application::DoMainLoop() {

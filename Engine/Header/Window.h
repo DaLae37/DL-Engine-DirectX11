@@ -13,8 +13,8 @@ public :
 
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	void InitWindow();
-	void FloatWindow();
+	HRESULT InitWindow();
+	HRESULT FloatWindow();
 
 	void WindowLoop();
 };
