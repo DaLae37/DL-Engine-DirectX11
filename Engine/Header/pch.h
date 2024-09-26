@@ -1,14 +1,10 @@
 #pragma once
-//프로젝트 세팅
+//Project Setting
 #define LANGUAGE "kor" // std::locale parameter
 
-//프로그램 세팅
-#define CONSOLE_ON true
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
+//Program Setting
 #define PROGRAM_NAME TEXT("Engine")
 #define CONSOLE_NAME TEXT("Console")
-#define IS_FULL_SCREEN true
 
 //라이브러리
 #pragma comment (lib,"WindowsCodecs.lib")

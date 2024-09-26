@@ -153,13 +153,19 @@ copy "$(TargetDir)" "$(ProjectDIr)Lib\Release\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
+    <ClInclude Include="Header\Application.h" />
+    <ClInclude Include="Header\Device.h" />
+    <ClInclude Include="Header\pch.h" />
+    <ClInclude Include="Header\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Device.cpp" />
+    <ClCompile Include="Source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
