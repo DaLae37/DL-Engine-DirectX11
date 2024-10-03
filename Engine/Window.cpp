@@ -7,7 +7,7 @@ Window::Window(HINSTANCE hInstance, INT nCmdShow) {
 }
 
 Window::~Window() {
-
+	
 }
 
 LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -69,4 +69,8 @@ HRESULT Window::FloatWindow() {
 
 void Window::WindowLoop() {
 	
+}
+
+HWND Window::getWindowHandle() {
+	return this->hWnd;
 }

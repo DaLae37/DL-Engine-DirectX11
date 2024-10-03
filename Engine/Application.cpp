@@ -7,7 +7,8 @@ Application::Application(HINSTANCE hInstance, INT nCmdShow) {
 }
 
 Application::~Application() {
-
+	SAFE_SMART_DELETE(this->window);
+	SAFE_SMART_DELETE(this->device);
 }
 
 HRESULT Application::InitApplication() {
@@ -24,22 +25,32 @@ HRESULT Application::InitApplication() {
 		return E_FAIL;
 	}
 
+	if (device->InitD3D11Device(window->getWindowHandle()) != S_OK) {
+		std::wstring message = L"InitD3DDevice Failed\n" + std::to_wstring(GetLastError());
+		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
+		return E_FAIL;
+	}
+
 	return S_OK;
 }
 
-int Application::DoMainLoop() {
+INT Application::DoMainLoop() {
 	MSG Message = { 0, };
 
 	while (Message.message != WM_QUIT) {
 		if (PeekMessage(&Message, nullptr, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&Message);
+			TranslateMessage(&Message);	
 			DispatchMessage(&Message);
 		}
-		
-		window->WindowLoop();
+		else {
+			window->WindowLoop();
+			device->Render();
+			SceneManagerInstance->Render();
+			SceneManagerInstance->Update(getDeltaTime());
+		}
 	}
 
-	return (int)Message.wParam;
+	return static_cast<INT>(Message.wParam);
 }
 
 void Application::InitDeltaTime() {
@@ -48,11 +59,11 @@ void Application::InitDeltaTime() {
 	QueryPerformanceFrequency(&frequency);
 }
 
-double Application::getDeltaTime() {
+float Application::getDeltaTime() {
 	QueryPerformanceCounter(&currentInterval);
 
 	LONGLONG interval = (currentInterval.QuadPart - beforeInterval.QuadPart);
-	DOUBLE deltaTime = static_cast<DOUBLE>(interval) / static_cast<DOUBLE>(frequency.QuadPart);
+	float deltaTime = static_cast<float>(interval) / static_cast<float>(frequency.QuadPart);
 
 	beforeInterval = currentInterval;
 

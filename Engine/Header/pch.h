@@ -7,32 +7,36 @@
 #define PROGRAM_NAME TEXT("DL-Engine")
 #define CONSOLE_NAME TEXT("Console")
 
-//라이브러리
-#pragma comment (lib,"WindowsCodecs.lib")
-#pragma comment (lib,"winmm.lib")
+//Static Library
+#pragma comment (lib,"d3d11.lib")
 #pragma comment (lib,"d2d1.lib")
 #pragma comment (lib,"dwrite.lib")
+#pragma comment (lib,"WindowsCodecs.lib")
+#pragma comment (lib,"winmm.lib")
 
-//윈도우 헤더
+//Windows Header
 #include <Windows.h>
-#include <wincodec.h>
-#include <xaudio2.h>
+#include <wrl.h>
+#define WRL Microsoft::WRL
 
-//다이렉트X 헤더
+//DiectX Header
+#include <d3d11_4.h>
 #include <d2d1.h>
 #include <d2d1helper.h>
 #include <dwrite.h>
+#include <xaudio2.h>
+#include <wincodec.h>
 
-//디버그 헤더
+//Debug Header
 #include <iostream>
 #include <string>
 #include <io.h>
 #include <fcntl.h>
 
-//메모리
+//Smart Pointer
 #include <memory>
 
-//스레드
+//Thread
 #include <thread>
 #include <mutex>
 #define THREAD_NUM 2
@@ -45,7 +49,7 @@
 #include <set>
 #include <algorithm>
 
-//상수 및 매크로 함수
+//Macro Define
 #define KEY_NONE 0
 #define KEY_UP 1
 #define KEY_DOWN 2
@@ -54,8 +58,10 @@
 #define SAFE_RELEASE(p) {if(p) {p->Release(); (p) = nullptr;}}
 #define SAFE_DELETE(p) {if(p) {delete (p); (p) = nullptr;}}
 #define SAFE_DELETE_ARRAY(p) {if(p){delete [](p); (p) = nullptr;}}
+#define SAFE_SMART_DELETE(p) {if(p) {p.reset();}}
 
-//색상
+//Color
+#include <DirectXColors.h>
 namespace Color {
 	const D2D_COLOR_F red = { 1.0f, 0.0f, 0.0f, 1.0f };
 	const D2D_COLOR_F green = { 0.0f, 1.0f, 0.0f, 1.0f };

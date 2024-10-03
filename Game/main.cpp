@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "Application.h"
+#include "SceneManager.h"
+
+#include "MainScene.h"
 
 INT WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, INT nCmdShow) {
 	srand(static_cast<unsigned int>(GetTickCount64()));
@@ -7,6 +10,8 @@ INT WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	std::unique_ptr<Application> application = std::make_unique<Application>(hInstance, nCmdShow);
 
 	if (application->InitApplication() == S_OK) {
+		SceneManagerInstance->ChangeScene(new MainScene());
+
 		INT msg = application->DoMainLoop();
 		return msg;
 	}

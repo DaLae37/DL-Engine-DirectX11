@@ -1,13 +1,13 @@
 #pragma once
 #include "pch.h"
-
 #include "Window.h"
 #include "Device.h"
+#include "SceneManager.h"
 
 class Application {
 private:
-	std::unique_ptr<Window> window;
-	std::unique_ptr<Device> device;
+	std::unique_ptr<Window> window = nullptr;
+	std::unique_ptr<Device> device = nullptr;
 
 	LARGE_INTEGER beforeInterval, currentInterval, frequency;
 public:
@@ -16,8 +16,8 @@ public:
 
 	HRESULT InitApplication();
 
-	int DoMainLoop();
+	INT DoMainLoop();
 
 	void InitDeltaTime();
-	double getDeltaTime();
+	float getDeltaTime();
 };
