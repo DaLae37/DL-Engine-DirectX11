@@ -30,6 +30,11 @@ HRESULT Application::InitApplication() {
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
 		return E_FAIL;
 	}
+	if (device->InitD2DDevice(window->getWindowHandle()) != S_OK) {
+		std::wstring message = L"InitD2DDevice Failed\n" + std::to_wstring(GetLastError());
+		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
+		return E_FAIL;
+	}
 
 	return S_OK;
 }

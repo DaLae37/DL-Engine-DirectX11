@@ -10,7 +10,12 @@ Device::~Device() {
 }
 
 void Device::Render() {
-    immediateContext->ClearRenderTargetView(renderTargetView.Get(), DirectX::Colors::MidnightBlue);
+    d3dContext->OMSetRenderTargets(1, d3dRenderTargetView.GetAddressOf(), nullptr);
+    d3dContext->ClearRenderTargetView(d3dRenderTargetView.Get(), DirectX::Colors::MidnightBlue);
+
+    d2dContext->BeginDraw();
+    d2dContext->EndDraw();
+
     swapChain->Present(0, 0);
 }
 
@@ -27,7 +32,7 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-    D3D_DRIVER_TYPE driverTypes[] =
+    const D3D_DRIVER_TYPE driverTypes[] =
     {
         D3D_DRIVER_TYPE_HARDWARE,
         D3D_DRIVER_TYPE_WARP,
@@ -35,7 +40,7 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
     };
     UINT numDriverTypes = ARRAYSIZE(driverTypes);
 
-    D3D_FEATURE_LEVEL featureLevels[] =
+    const D3D_FEATURE_LEVEL featureLevels[] =
     {
         D3D_FEATURE_LEVEL_11_1,
         D3D_FEATURE_LEVEL_11_0,
@@ -48,12 +53,12 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
     {
         driverType = driverTypes[driverTypeIndex];
         hr = D3D11CreateDevice(nullptr, driverType, nullptr, createDeviceFlags, featureLevels, numFeatureLevels,
-            D3D11_SDK_VERSION, d3dDevice.GetAddressOf(), &featureLevel, immediateContext.GetAddressOf());
+            D3D11_SDK_VERSION, d3dDevice.GetAddressOf(), &featureLevel, d3dContext.GetAddressOf());
 
         if (hr == E_INVALIDARG)
         {
             hr = D3D11CreateDevice(nullptr, driverType, nullptr, createDeviceFlags, &featureLevels[1], numFeatureLevels - 1,
-                D3D11_SDK_VERSION, d3dDevice.GetAddressOf(), &featureLevel, immediateContext.GetAddressOf());
+                D3D11_SDK_VERSION, d3dDevice.GetAddressOf(), &featureLevel, d3dContext.GetAddressOf());
         }
 
         if (SUCCEEDED(hr)) {
@@ -65,7 +70,7 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
     }
 
     WRL::ComPtr<IDXGIDevice> dxgiDevice;
-    WRL::ComPtr<IDXGIFactory1> dxgiFactory;
+    WRL::ComPtr<IDXGIFactory> dxgiFactory;
 
     hr = d3dDevice.As(&dxgiDevice);
     if (SUCCEEDED(hr))
@@ -88,13 +93,13 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
         hr = d3dDevice.As(&d3dDevice1);
         if (SUCCEEDED(hr))
         {
-            immediateContext.As(&immediateContext1);
+            d3dContext.As(&d3dContext);
         }
 
         DXGI_SWAP_CHAIN_DESC1 sd = {};
         sd.Width = width;
         sd.Height = height;
-        sd.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        sd.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
         sd.SampleDesc.Count = 1;
         sd.SampleDesc.Quality = 0;
         sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
@@ -112,7 +117,7 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
         sd.BufferCount = 1;
         sd.BufferDesc.Width = width;
         sd.BufferDesc.Height = height;
-        sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
         sd.BufferDesc.RefreshRate.Numerator = 60;
         sd.BufferDesc.RefreshRate.Denominator = 1;
         sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
@@ -133,13 +138,10 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
         return hr;
     }
 
-    hr = d3dDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, renderTargetView.GetAddressOf());
+    hr = d3dDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, d3dRenderTargetView.GetAddressOf());
     if (FAILED(hr)) {
         return hr;
     }
-
-
-    immediateContext->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), nullptr);
 
     D3D11_VIEWPORT vp = D3D11_VIEWPORT();
     vp.Width = static_cast<FLOAT>(width);
@@ -149,7 +151,50 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
     vp.TopLeftX = 0;
     vp.TopLeftY = 0;
 
-    immediateContext->RSSetViewports(1, &vp);
+    d3dContext->RSSetViewports(1, &vp);
 
+    return S_OK;
+}
+
+HRESULT Device::InitD2DDevice(HWND hWnd) {
+    HRESULT hr = HRESULT();
+
+    WRL::ComPtr<IDXGIDevice> dxgiDevice;
+    hr = d3dDevice->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(dxgiDevice.GetAddressOf()));
+    if (FAILED(hr)) {
+        return hr;
+    }
+
+    hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, d2dFactory.GetAddressOf());
+    if (FAILED(hr)) {
+        return hr;
+    }
+
+    hr = d2dFactory->CreateDevice(dxgiDevice.Get(), d2dDevice.GetAddressOf());
+    if (FAILED(hr)) {
+        return hr;
+    }
+
+    hr = d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, d2dContext.GetAddressOf());
+    if (FAILED(hr)) {
+        return hr;
+    }
+
+    WRL::ComPtr<IDXGISurface> dxgiSurface;
+    hr = swapChain->GetBuffer(0, __uuidof(IDXGISurface), reinterpret_cast<void **>(dxgiSurface.GetAddressOf()));
+    if (FAILED(hr)) {
+        return hr;
+    }
+
+    D2D1_RENDER_TARGET_PROPERTIES renderTargetProps = D2D1::RenderTargetProperties(
+        D2D1_RENDER_TARGET_TYPE_DEFAULT,
+        D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED),
+        96.0f, 96.0f
+    );
+
+    hr = d2dFactory->CreateDxgiSurfaceRenderTarget(dxgiSurface.Get(), &renderTargetProps, d2dRenderTarget.GetAddressOf());
+    if (FAILED(hr)) {
+        return hr;
+    }
     return S_OK;
 }
