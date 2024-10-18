@@ -1,12 +1,20 @@
 #pragma once
 #include "pch.h"
+#include "Object.h"
+#include "UI.h"
 
 class Scene
 {
-public :
+private:
+	std::vector<Object*> objectList;
+	std::vector<UI*> uiList;
+public:
 	Scene();
 	virtual ~Scene();
 
 	virtual void Update(float dTime);
-	virtual void Render();
+	void RenderObject();
+	void RenderUI(ID2D1DeviceContext* d2dContext);
+
+	void AddUI(UI* ui);
 };

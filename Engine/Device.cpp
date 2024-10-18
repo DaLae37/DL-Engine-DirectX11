@@ -9,24 +9,27 @@ Device::~Device() {
 
 }
 
-void Device::Render() {
-    d3dContext->OMSetRenderTargets(1, d3dRenderTargetView.GetAddressOf(), nullptr);
-    d3dContext->ClearRenderTargetView(d3dRenderTargetView.Get(), DirectX::Colors::MidnightBlue);
+void Device::RenderStart() {
+    d3dContext->ClearRenderTargetView(d3dRenderTargetView.Get(), DirectX::Colors::White);
 
     d2dContext->BeginDraw();
-    d2dContext->EndDraw();
+    d2dContext->Clear(D2D1::ColorF(D2D1::ColorF::White));
+}
 
-    swapChain->Present(0, 0);
+void Device::RenderEnd() {
+    d2dContext->EndDraw();
+    dxgiSwapChain->Present(1, 0);
 }
 
 HRESULT Device::InitD3D11Device(HWND hWnd) {
     HRESULT hr = HRESULT();
 
-    RECT rc = RECT();
-    GetClientRect(hWnd, &rc);
-    UINT width = static_cast<UINT>(rc.right - rc.left);
-    UINT height = static_cast<UINT>(rc.bottom - rc.top);
+    RECT rect = RECT();
+    GetClientRect(hWnd, &rect);
+    UINT width = static_cast<UINT>(rect.right - rect.left);
+    UINT height = static_cast<UINT>(rect.bottom - rect.top);
 
+    // Create D3D11 Device
     UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #ifdef _DEBUG
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
@@ -52,15 +55,7 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
     for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++)
     {
         driverType = driverTypes[driverTypeIndex];
-        hr = D3D11CreateDevice(nullptr, driverType, nullptr, createDeviceFlags, featureLevels, numFeatureLevels,
-            D3D11_SDK_VERSION, d3dDevice.GetAddressOf(), &featureLevel, d3dContext.GetAddressOf());
-
-        if (hr == E_INVALIDARG)
-        {
-            hr = D3D11CreateDevice(nullptr, driverType, nullptr, createDeviceFlags, &featureLevels[1], numFeatureLevels - 1,
-                D3D11_SDK_VERSION, d3dDevice.GetAddressOf(), &featureLevel, d3dContext.GetAddressOf());
-        }
-
+        hr = D3D11CreateDevice(nullptr, driverType, nullptr, createDeviceFlags, featureLevels, numFeatureLevels, D3D11_SDK_VERSION, d3dDevice.GetAddressOf(), &featureLevel, d3dContext.GetAddressOf());
         if (SUCCEEDED(hr)) {
             break;
         }
@@ -69,71 +64,33 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
         return hr;
     }
 
-    WRL::ComPtr<IDXGIDevice> dxgiDevice;
-    WRL::ComPtr<IDXGIFactory> dxgiFactory;
-
-    hr = d3dDevice.As(&dxgiDevice);
-    if (SUCCEEDED(hr))
-    {
-        WRL::ComPtr<IDXGIAdapter> adapter;
-        hr = dxgiDevice->GetAdapter(&adapter);
-        if (SUCCEEDED(hr))
-        {
-            hr = adapter->GetParent(IID_PPV_ARGS(&dxgiFactory));
-        }
-    }
+    // Create DXGI Device with D3D11 Device
+    hr = d3dDevice->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(dxgiDevice.GetAddressOf()));
     if (FAILED(hr)) {
         return hr;
     }
 
-    WRL::ComPtr<IDXGIFactory2> dxgiFactory2;
-    hr = dxgiFactory.As(&dxgiFactory2);
-    if (SUCCEEDED(hr))
-    {
-        hr = d3dDevice.As(&d3dDevice1);
-        if (SUCCEEDED(hr))
-        {
-            d3dContext.As(&d3dContext);
-        }
+    // Setting SwapChain
+    DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
+    swapChainDesc.BufferCount = 1;
+    swapChainDesc.BufferDesc.Width = width;
+    swapChainDesc.BufferDesc.Height = height;
+    swapChainDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+    swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    swapChainDesc.OutputWindow = hWnd;
+    swapChainDesc.SampleDesc.Count = 1;
+    swapChainDesc.Windowed = TRUE;
 
-        DXGI_SWAP_CHAIN_DESC1 sd = {};
-        sd.Width = width;
-        sd.Height = height;
-        sd.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-        sd.SampleDesc.Count = 1;
-        sd.SampleDesc.Quality = 0;
-        sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-        sd.BufferCount = 1;
-
-        hr = dxgiFactory2->CreateSwapChainForHwnd(d3dDevice.Get(), hWnd, &sd, nullptr, nullptr, swapChain1.GetAddressOf());
-        if (SUCCEEDED(hr))
-        {
-            hr = swapChain1.As(&swapChain);
-        }
-    }
-    else
-    {
-        DXGI_SWAP_CHAIN_DESC sd = {};
-        sd.BufferCount = 1;
-        sd.BufferDesc.Width = width;
-        sd.BufferDesc.Height = height;
-        sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-        sd.BufferDesc.RefreshRate.Numerator = 60;
-        sd.BufferDesc.RefreshRate.Denominator = 1;
-        sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-        sd.OutputWindow = hWnd;
-        sd.SampleDesc.Count = 1;
-        sd.SampleDesc.Quality = 0;
-        sd.Windowed = TRUE;
-
-        hr = dxgiFactory->CreateSwapChain(d3dDevice.Get(), &sd, swapChain.GetAddressOf());
-    }
+    // Create SwapChain
+    CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void**>(dxgiFactory.GetAddressOf()));
+    hr = dxgiFactory->CreateSwapChain(d3dDevice.Get(), &swapChainDesc, dxgiSwapChain.GetAddressOf());
     if (FAILED(hr)) {
         return hr;
     }
 
+    // Create D3DRenderTarget
     WRL::ComPtr<ID3D11Texture2D> backBuffer;
-    hr = swapChain->GetBuffer(0, IID_PPV_ARGS(&backBuffer));
+    hr = dxgiSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf()));
     if (FAILED(hr)) {
         return hr;
     }
@@ -142,16 +99,20 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
     if (FAILED(hr)) {
         return hr;
     }
+    
+    // Setting D3DRenderTarget
+    d3dContext->OMSetRenderTargets(1, d3dRenderTargetView.GetAddressOf(), nullptr);
 
-    D3D11_VIEWPORT vp = D3D11_VIEWPORT();
-    vp.Width = static_cast<FLOAT>(width);
-    vp.Height = static_cast<FLOAT>(height);
-    vp.MinDepth = 0.0f;
-    vp.MaxDepth = 1.0f;
-    vp.TopLeftX = 0;
-    vp.TopLeftY = 0;
+    // Setting ViewPort
+    D3D11_VIEWPORT viewPort = D3D11_VIEWPORT();
+    viewPort.Width = static_cast<FLOAT>(width);
+    viewPort.Height = static_cast<FLOAT>(height);
+    viewPort.MinDepth = 0.0f;
+    viewPort.MaxDepth = 1.0f;
+    viewPort.TopLeftX = 0;
+    viewPort.TopLeftY = 0;
 
-    d3dContext->RSSetViewports(1, &vp);
+    d3dContext->RSSetViewports(1, &viewPort);
 
     return S_OK;
 }
@@ -159,42 +120,56 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
 HRESULT Device::InitD2DDevice(HWND hWnd) {
     HRESULT hr = HRESULT();
 
-    WRL::ComPtr<IDXGIDevice> dxgiDevice;
-    hr = d3dDevice->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(dxgiDevice.GetAddressOf()));
+    // Create D2D Factory
+    const D2D1_FACTORY_OPTIONS opts = { D2D1_DEBUG_LEVEL_INFORMATION };
+    hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, __uuidof(ID2D1Factory1), &opts, reinterpret_cast<void**>(d2dFactory.GetAddressOf()));
     if (FAILED(hr)) {
         return hr;
     }
 
-    hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, d2dFactory.GetAddressOf());
-    if (FAILED(hr)) {
-        return hr;
-    }
-
+    // Create D2D Device
     hr = d2dFactory->CreateDevice(dxgiDevice.Get(), d2dDevice.GetAddressOf());
     if (FAILED(hr)) {
         return hr;
     }
 
+    // Create D2D Context
     hr = d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, d2dContext.GetAddressOf());
     if (FAILED(hr)) {
         return hr;
     }
 
-    WRL::ComPtr<IDXGISurface> dxgiSurface;
-    hr = swapChain->GetBuffer(0, __uuidof(IDXGISurface), reinterpret_cast<void **>(dxgiSurface.GetAddressOf()));
+    // Create D2DRenderTarget
+    WRL::ComPtr<IDXGISurface> backBuffer;
+    hr = dxgiSwapChain->GetBuffer(0, __uuidof(IDXGISurface), reinterpret_cast<void**>(backBuffer.GetAddressOf()));
     if (FAILED(hr)) {
         return hr;
     }
 
-    D2D1_RENDER_TARGET_PROPERTIES renderTargetProps = D2D1::RenderTargetProperties(
-        D2D1_RENDER_TARGET_TYPE_DEFAULT,
-        D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED),
-        96.0f, 96.0f
+    const D2D1_BITMAP_PROPERTIES1 bitmapProperties = D2D1::BitmapProperties1(
+        D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
+        D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_IGNORE)
     );
 
-    hr = d2dFactory->CreateDxgiSurfaceRenderTarget(dxgiSurface.Get(), &renderTargetProps, d2dRenderTarget.GetAddressOf());
+    hr = d2dContext->CreateBitmapFromDxgiSurface(backBuffer.Get(), &bitmapProperties, d2dRenderTarget.GetAddressOf());
+    if (FAILED(hr)) return hr;
+
+    // Setting D2D RenderTarget
+    d2dContext->SetTarget(d2dRenderTarget.Get());
+
+    // Create WICFactory
+    hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&wicFactory));
     if (FAILED(hr)) {
         return hr;
     }
+
     return S_OK;
+}
+
+ID2D1DeviceContext* Device::getD2DContext() {
+    return this->d2dContext.Get();
+}
+
+IWICImagingFactory* Device::getWicFactory() {
+    return this->wicFactory.Get();
 }

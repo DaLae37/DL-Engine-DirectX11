@@ -7,7 +7,11 @@
 class SceneManager
 {
 private :
+	bool isInit = false;
+
 	Scene *currentScene = nullptr;
+	
+	ID2D1DeviceContext* d2dContext = nullptr;
 public :
 	SceneManager();
 	~SceneManager();
@@ -17,5 +21,6 @@ public :
 	void Update(float dTime);
 	void Render();
 
+	void Init(ID2D1DeviceContext* d2dContext);
 	void ChangeScene(Scene* nextScene);
 };

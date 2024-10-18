@@ -9,7 +9,7 @@ INT WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	std::unique_ptr<Application> application = std::make_unique<Application>(hInstance, nCmdShow);
 
-	if (application->InitApplication() == S_OK) {
+	if (application->InitApplication() == S_OK && application->InitManager() == S_OK) {
 		SceneManagerInstance->ChangeScene(new MainScene());
 
 		INT msg = application->DoMainLoop();

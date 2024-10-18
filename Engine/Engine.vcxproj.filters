@@ -25,6 +25,12 @@
     <Filter Include="소스 파일\Scene">
       <UniqueIdentifier>{e381c988-199f-49a1-8ce1-802484bc3039}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Obect">
+      <UniqueIdentifier>{4beff752-2a31-48ce-a50d-c3f5ba854b66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Object">
+      <UniqueIdentifier>{de682ca0-20b5-4c87-890d-3d5d4d95fb34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\pch.h">
@@ -44,6 +50,18 @@
     </ClInclude>
     <ClInclude Include="Header\SceneManager.h">
       <Filter>헤더 파일\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Object.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\TextureManager.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ImageUI.h">
+      <Filter>헤더 파일\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -65,5 +83,22 @@
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>소스 파일\Obect</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>소스 파일\Obect</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>소스 파일\Obect</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageUI.cpp">
+      <Filter>소스 파일\Obect</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Texture.hlsli">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
 </Project>

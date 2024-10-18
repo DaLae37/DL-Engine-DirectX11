@@ -4,6 +4,8 @@
 Application::Application(HINSTANCE hInstance, INT nCmdShow) {
 	this->window = std::make_unique<Window>(hInstance, nCmdShow);
 	this->device = std::make_unique<Device>();
+
+	InitDeltaTime();
 }
 
 Application::~Application() {
@@ -12,8 +14,6 @@ Application::~Application() {
 }
 
 HRESULT Application::InitApplication() {
-	InitDeltaTime();
-
 	if (window->InitWindow() != S_OK) {
 		std::wstring message = L"Init Window Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
@@ -49,13 +49,32 @@ INT Application::DoMainLoop() {
 		}
 		else {
 			window->WindowLoop();
-			device->Render();
+			device->RenderStart();
 			SceneManagerInstance->Render();
 			SceneManagerInstance->Update(getDeltaTime());
+			device->RenderEnd();
 		}
 	}
 
 	return static_cast<INT>(Message.wParam);
+}
+
+HRESULT Application::InitManager() {
+	TextureManagerInstance->Init(device->getD2DContext(), device->getWicFactory());
+	if (TextureManagerInstance->getInstance() == nullptr) {
+		std::wstring message = L"Init TextureManager Failed\n" + std::to_wstring(GetLastError());
+		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
+		return E_FAIL;
+	}
+
+	SceneManagerInstance->Init(device->getD2DContext());
+	if (SceneManagerInstance->getInstance() == nullptr) {
+		std::wstring message = L"Init SceneManager Failed\n" + std::to_wstring(GetLastError());
+		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
+		return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 void Application::InitDeltaTime() {

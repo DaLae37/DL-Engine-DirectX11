@@ -2,7 +2,10 @@
 #include "pch.h"
 #include "Window.h"
 #include "Device.h"
+
+//Manager
 #include "SceneManager.h"
+#include "TextureManager.h"
 
 class Application {
 private:
@@ -15,6 +18,7 @@ public:
 	~Application();
 
 	HRESULT InitApplication();
+	HRESULT InitManager();
 
 	INT DoMainLoop();
 

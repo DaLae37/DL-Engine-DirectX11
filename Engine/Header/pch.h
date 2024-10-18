@@ -8,6 +8,7 @@
 #define CONSOLE_NAME TEXT("Console")
 
 //Static Library
+#pragma comment (lib,"dxgi.lib")
 #pragma comment (lib,"d3d11.lib")
 #pragma comment (lib,"d2d1.lib")
 #pragma comment (lib,"dwrite.lib")
@@ -20,6 +21,7 @@
 #define WRL Microsoft::WRL
 
 //DiectX Header
+#include <dxgi.h>
 #include <d3d11_4.h>
 #include <d2d1_3.h>
 #include <d2d1_3helper.h>
