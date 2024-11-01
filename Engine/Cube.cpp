@@ -74,7 +74,7 @@ HRESULT Cube::CreateData(ID3D11Device* d3dDevice) {
 	}
 
 	bufferDesc = {};
-	bufferDesc.ByteWidth = sizeof(ConstantMatrix);
+	bufferDesc.ByteWidth = sizeof(ConstantBuffer);
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bufferDesc.CPUAccessFlags = 0;
@@ -83,6 +83,25 @@ HRESULT Cube::CreateData(ID3D11Device* d3dDevice) {
 		SAFE_RELEASE(constantBuffer);
 		return hr;
 	}
+
+	constantMatrix.world = DirectX::XMMatrixRotationY(45.0f);
+	constantMatrix.world *= DirectX::XMMatrixTranslation(0, 0, 5);
+	constantMatrix.world = DirectX::XMMatrixTranspose(constantMatrix.world);
+
+	DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 1.0f, -5.0f, 0.0f);
+	DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	constantMatrix.view = DirectX::XMMatrixLookAtLH(eye, at, up);
+	constantMatrix.view = DirectX::XMMatrixTranspose(constantMatrix.view);
+
+	constantMatrix.projection = DirectX::XMMatrixPerspectiveFovLH
+	(
+		DirectX::XM_PIDIV2,
+		1920 / (FLOAT)1080,
+		0.01f,
+		100.0f
+	);
+	constantMatrix.projection = DirectX::XMMatrixTranspose(constantMatrix.projection);
 }
 
 void Cube::BindData(ID3D11DeviceContext* d3dContext) {
@@ -140,19 +159,6 @@ HRESULT Cube::CreatePipeline(ID3D11Device* d3dDevice) {
 		SAFE_RELEASE(pixelShader);
 		return hr;
 	}
-
-	constantMatrix.world = DirectX::XMMatrixIdentity();	
-	DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 1.0f, -5.0f, 0.0f);
-	DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	constantMatrix.view = DirectX::XMMatrixLookAtLH(eye, at, up);
-	constantMatrix.projection = DirectX::XMMatrixPerspectiveFovLH
-	(
-		DirectX::XM_PIDIV2,
-		1920 / (FLOAT)1080,
-		0.01f,
-		100.0f
-	);
 }
 
 void Cube::Update(float deltaTime) {

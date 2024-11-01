@@ -6,7 +6,7 @@ struct Vertex {
 	DirectX::XMFLOAT4 color;
 };
 
-struct ConstantMatrix {
+struct ConstantBuffer {
 	DirectX::XMMATRIX world = DirectX::XMMatrixIdentity();
 	DirectX::XMMATRIX view = DirectX::XMMatrixIdentity();
 	DirectX::XMMATRIX projection = DirectX::XMMatrixIdentity();
@@ -22,7 +22,7 @@ protected :
 	WRL::ComPtr<ID3D11Buffer> indexBuffer = nullptr;
 	WRL::ComPtr<ID3D11Buffer> constantBuffer = nullptr;
 
-	ConstantMatrix constantMatrix;
+	ConstantBuffer constantMatrix;
 public :
 	Object();
 	virtual ~Object();
