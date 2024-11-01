@@ -154,9 +154,11 @@ copy "$(TargetDir)" "$(ProjectDIr)Lib\Release\"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Header\Application.h" />
+    <ClInclude Include="Header\Cube.h" />
     <ClInclude Include="Header\Device.h" />
     <ClInclude Include="Header\ImageUI.h" />
     <ClInclude Include="Header\Object.h" />
+    <ClInclude Include="Header\ObjectManager.h" />
     <ClInclude Include="Header\pch.h" />
     <ClInclude Include="Header\Scene.h" />
     <ClInclude Include="Header\SceneManager.h" />
@@ -166,11 +168,14 @@ copy "$(TargetDir)" "$(ProjectDIr)Lib\Release\"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="ImageUI.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -179,7 +184,21 @@ copy "$(TargetDir)" "$(ProjectDIr)Lib\Release\"</Command>
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Texture.hlsli" />
+    <None Include="Shader\Cube.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\Cube_PS.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\Cube_VS.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

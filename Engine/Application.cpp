@@ -49,9 +49,10 @@ INT Application::DoMainLoop() {
 		}
 		else {
 			window->WindowLoop();
+			SceneManagerInstance->Update(getDeltaTime());
+
 			device->RenderStart();
 			SceneManagerInstance->Render();
-			SceneManagerInstance->Update(getDeltaTime());
 			device->RenderEnd();
 		}
 	}
@@ -67,7 +68,14 @@ HRESULT Application::InitManager() {
 		return E_FAIL;
 	}
 
-	SceneManagerInstance->Init(device->getD2DContext());
+	ObjectManagerInstance->Init(device->getD3DDevice(), device->getD3DContext());
+	if (ObjectManagerInstance->getInstance() == nullptr) {
+		std::wstring message = L"Init ObjectManager Failed\n" + std::to_wstring(GetLastError());
+		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
+		return E_FAIL;
+	}
+
+	SceneManagerInstance->Init(device->getD3DContext(), device->getD2DContext());
 	if (SceneManagerInstance->getInstance() == nullptr) {
 		std::wstring message = L"Init SceneManager Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);

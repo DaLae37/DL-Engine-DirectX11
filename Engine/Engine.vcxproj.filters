@@ -51,9 +51,6 @@
     <ClInclude Include="Header\SceneManager.h">
       <Filter>헤더 파일\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Object.h">
-      <Filter>헤더 파일\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Header\UI.h">
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
@@ -61,6 +58,15 @@
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
     <ClInclude Include="Header\ImageUI.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Cube.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ObjectManager.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Object.h">
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,10 +101,24 @@
     <ClCompile Include="ImageUI.cpp">
       <Filter>소스 파일\Obect</Filter>
     </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>소스 파일\Obect</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>소스 파일\Obect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Texture.hlsli">
+    <None Include="Shader\Cube.hlsli">
       <Filter>리소스 파일</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\Cube_PS.hlsl">
+      <Filter>리소스 파일</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Cube_VS.hlsl">
+      <Filter>리소스 파일</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

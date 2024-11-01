@@ -10,6 +10,7 @@
 //Static Library
 #pragma comment (lib,"dxgi.lib")
 #pragma comment (lib,"d3d11.lib")
+#pragma comment (lib,"d3dcompiler.lib")
 #pragma comment (lib,"d2d1.lib")
 #pragma comment (lib,"dwrite.lib")
 #pragma comment (lib,"WindowsCodecs.lib")
@@ -17,17 +18,24 @@
 
 //Windows Header
 #include <Windows.h>
+#include <wincodec.h>
 #include <wrl.h>
 #define WRL Microsoft::WRL
 
 //DiectX Header
 #include <dxgi.h>
-#include <d3d11_4.h>
-#include <d2d1_3.h>
-#include <d2d1_3helper.h>
+#include <DirectXMath.h>
+#include <DirectXColors.h>
 #include <dwrite.h>
 #include <xaudio2.h>
-#include <wincodec.h>
+
+//DirectX11
+#include <d3d11_4.h>
+#include <d3dcompiler.h>
+
+//Direct2D
+#include <d2d1_3.h>
+#include <d2d1_3helper.h>
 
 //Debug Header
 #include <iostream>
@@ -63,7 +71,6 @@
 #define SAFE_SMART_DELETE(p) {if(p) {p.reset();}}
 
 //Color
-#include <DirectXColors.h>
 namespace Color {
 	const D2D_COLOR_F red = { 1.0f, 0.0f, 0.0f, 1.0f };
 	const D2D_COLOR_F green = { 0.0f, 1.0f, 0.0f, 1.0f };

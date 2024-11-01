@@ -3,8 +3,8 @@
 
 ImageUI::ImageUI(const wchar_t* path) {
 	texture = TextureManagerInstance->LoadD2DTextureFromFile(path);
-	if (!texture.expired()) {
-		D2D_SIZE_U textureSize = texture.lock()->GetPixelSize();
+	if (texture != nullptr) {
+		D2D_SIZE_U textureSize = texture->GetPixelSize();
 		width = textureSize.width;
 		height = textureSize.height;
 
@@ -23,7 +23,7 @@ ImageUI::ImageUI(const wchar_t* path) {
 }
 
 ImageUI::~ImageUI() {
-	texture.reset();
+	texture.Reset();
 }
 
 void ImageUI::Update(float dTime) {
@@ -31,10 +31,10 @@ void ImageUI::Update(float dTime) {
 }
 
 void ImageUI::Render(ID2D1DeviceContext* d2dContext) {
-	if (!texture.expired()) {
+	if (texture != nullptr) {
 		d2dContext->SetTransform(D2D1::Matrix3x2F::Scale(scale.x, scale.y, scalingCenter)
 			* D2D1::Matrix3x2F::Rotation(rotation, rotationCenter)
 			* D2D1::Matrix3x2F::Translation(pos.x, pos.y));
-		d2dContext->DrawBitmap(texture.lock().get(), &rect, color.a, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, nullptr);
+		d2dContext->DrawBitmap(texture.Get(), &rect, color.a, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, nullptr);
 	}
 }

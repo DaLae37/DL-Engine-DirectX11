@@ -5,6 +5,7 @@
 
 //Manager
 #include "SceneManager.h"
+#include "ObjectManager.h"
 #include "TextureManager.h"
 
 class Application {

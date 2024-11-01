@@ -13,8 +13,9 @@ public:
 	virtual ~Scene();
 
 	virtual void Update(float dTime);
-	void RenderObject();
+	void RenderObject(ID3D11DeviceContext* d3dContext);
 	void RenderUI(ID2D1DeviceContext* d2dContext);
 
+	void AddObject(Object* object);
 	void AddUI(UI* ui);
 };

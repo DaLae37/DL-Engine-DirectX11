@@ -1,6 +1,8 @@
 #pragma once
 #include "Scene.h"
+#include "Cube.h"
 #include "ImageUI.h"
+#include "ObjectManager.h"
 
 class MainScene : public Scene
 {
@@ -9,7 +11,8 @@ public :
 	~MainScene();
 
 	void Update(float dTime);
-	void Render();
 
-	ImageUI *ui;
+	ImageUI *ui1;
+
+	Cube* cube;
 };

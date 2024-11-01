@@ -10,14 +10,15 @@ Device::~Device() {
 }
 
 void Device::RenderStart() {
-    d3dContext->ClearRenderTargetView(d3dRenderTargetView.Get(), DirectX::Colors::White);
+    d3dContext->ClearRenderTargetView(d3dRenderTargetView.Get(), DirectX::Colors::MidnightBlue);
+    d3dContext->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
     d2dContext->BeginDraw();
-    d2dContext->Clear(D2D1::ColorF(D2D1::ColorF::White));
 }
 
 void Device::RenderEnd() {
     d2dContext->EndDraw();
+
     dxgiSwapChain->Present(1, 0);
 }
 
@@ -114,6 +115,38 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
 
     d3dContext->RSSetViewports(1, &viewPort);
 
+    // Setting Depth Stencil
+    D3D11_TEXTURE2D_DESC descDepth = {};
+    descDepth.Width = width;
+    descDepth.Height = height;
+    descDepth.MipLevels = 1;
+    descDepth.ArraySize = 1;
+    descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    descDepth.SampleDesc.Count = 1;
+    descDepth.SampleDesc.Quality = 0;
+    descDepth.Usage = D3D11_USAGE_DEFAULT;
+    descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    descDepth.CPUAccessFlags = 0;
+    descDepth.MiscFlags = 0;
+    hr = d3dDevice->CreateTexture2D(&descDepth, nullptr, depthStencil.GetAddressOf());
+    if (FAILED(hr)) {
+        return hr;
+    }
+
+    // Setting Depth Stencil View
+    D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
+    descDSV.Format = descDepth.Format;
+    descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+    descDSV.Texture2D.MipSlice = 0;
+    hr = d3dDevice->CreateDepthStencilView(depthStencil.Get(), &descDSV, depthStencilView.GetAddressOf());
+    if (FAILED(hr)) {
+        return hr;
+    }
+    d3dContext->OMSetRenderTargets(1, d3dRenderTargetView.GetAddressOf(), depthStencilView.Get());
+
+    // Setting Primitive Type
+    d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
     return S_OK;
 }
 
@@ -152,7 +185,9 @@ HRESULT Device::InitD2DDevice(HWND hWnd) {
     );
 
     hr = d2dContext->CreateBitmapFromDxgiSurface(backBuffer.Get(), &bitmapProperties, d2dRenderTarget.GetAddressOf());
-    if (FAILED(hr)) return hr;
+    if (FAILED(hr)) {
+        return hr;
+    }
 
     // Setting D2D RenderTarget
     d2dContext->SetTarget(d2dRenderTarget.Get());
@@ -164,6 +199,14 @@ HRESULT Device::InitD2DDevice(HWND hWnd) {
     }
 
     return S_OK;
+}
+
+ID3D11Device* Device::getD3DDevice() {
+    return this->d3dDevice.Get();
+}
+
+ID3D11DeviceContext* Device::getD3DContext() {
+    return this->d3dContext.Get();
 }
 
 ID2D1DeviceContext* Device::getD2DContext() {
