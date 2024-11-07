@@ -6,7 +6,7 @@
 class ImageUI : public UI
 {
 private :
-	WRL::ComPtr<ID2D1Bitmap> texture;
+	std::weak_ptr<ID2D1Bitmap> texture;
 	D2D_COLOR_F color;
 	int width;
 	int height;

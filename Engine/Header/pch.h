@@ -68,7 +68,8 @@
 #define SAFE_RELEASE(p) {if(p) {p->Release(); (p) = nullptr;}}
 #define SAFE_DELETE(p) {if(p) {delete (p); (p) = nullptr;}}
 #define SAFE_DELETE_ARRAY(p) {if(p){delete [](p); (p) = nullptr;}}
-#define SAFE_SMART_DELETE(p) {if(p) {p.reset();}}
+#define SAFE_SMART_DELETE(p) {if(p) {p.reset(); (p) = nullptr;}}
+#define SAFE_COMPTR_DELETE(p) {if(p) {p.Reset(); (p) = nullptr;}}
 
 //Color
 namespace Color {

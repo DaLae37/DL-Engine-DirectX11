@@ -7,13 +7,16 @@
 class ObjectManager
 {
 private:
+	ObjectManager();
+	ObjectManager(const ObjectManager&) = delete;
+	ObjectManager& operator=(const ObjectManager&) = delete;
+
 	bool isInit = false;
 
 	// Get pointer from device
 	ID3D11Device* d3dDevice = nullptr;
 	ID3D11DeviceContext* d3dContext = nullptr;
 public:
-	ObjectManager();
 	~ObjectManager();
 
 	static ObjectManager* getInstance();

@@ -6,7 +6,20 @@ Device::Device() {
 }
 
 Device::~Device() {
+    SAFE_COMPTR_DELETE(dxgiDevice);
+    SAFE_COMPTR_DELETE(dxgiSwapChain);
+    SAFE_COMPTR_DELETE(dxgiFactory);
 
+    SAFE_COMPTR_DELETE(d3dDevice);
+    SAFE_COMPTR_DELETE(d3dContext);
+    SAFE_COMPTR_DELETE(d3dRenderTargetView);
+    SAFE_COMPTR_DELETE(depthStencil);
+    SAFE_COMPTR_DELETE(depthStencilView);
+
+    SAFE_COMPTR_DELETE(d2dFactory);
+    SAFE_COMPTR_DELETE(d2dDevice);
+    SAFE_COMPTR_DELETE(d2dContext);
+    SAFE_COMPTR_DELETE(d2dRenderTarget);
 }
 
 void Device::RenderStart() {
@@ -83,7 +96,11 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
     swapChainDesc.Windowed = TRUE;
 
     // Create SwapChain
-    CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void**>(dxgiFactory.GetAddressOf()));
+    hr = CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void**>(dxgiFactory.GetAddressOf()));
+    if (FAILED(hr)) {
+        return hr;
+    }
+
     hr = dxgiFactory->CreateSwapChain(d3dDevice.Get(), &swapChainDesc, dxgiSwapChain.GetAddressOf());
     if (FAILED(hr)) {
         return hr;
@@ -214,5 +231,5 @@ ID2D1DeviceContext* Device::getD2DContext() {
 }
 
 IWICImagingFactory* Device::getWicFactory() {
-    return this->wicFactory.Get();
+    return wicFactory;
 }

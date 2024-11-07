@@ -7,6 +7,10 @@
 class SceneManager
 {
 private :
+	SceneManager();
+	SceneManager(const SceneManager&) = delete;
+	SceneManager& operator=(const SceneManager&) = delete;
+
 	bool isInit = false;
 
 	Scene *currentScene = nullptr;
@@ -15,7 +19,6 @@ private :
 	ID2D1DeviceContext* d2dContext = nullptr;
 	ID3D11DeviceContext* d3dContext = nullptr;
 public :
-	SceneManager();
 	~SceneManager();
 
 	static SceneManager* getInstance();
