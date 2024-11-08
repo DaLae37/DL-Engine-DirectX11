@@ -2,7 +2,6 @@
 #include "Scene.h"
 #include "Cube.h"
 #include "ImageUI.h"
-#include "ObjectManager.h"
 
 class MainScene : public Scene
 {

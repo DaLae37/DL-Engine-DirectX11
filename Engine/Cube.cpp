@@ -74,7 +74,7 @@ HRESULT Cube::CreateData(ID3D11Device* d3dDevice) {
 	}
 
 	bufferDesc = {};
-	bufferDesc.ByteWidth = sizeof(ConstantBuffer);
+	bufferDesc.ByteWidth = sizeof(ObjectBuffer);
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bufferDesc.CPUAccessFlags = 0;
@@ -84,24 +84,9 @@ HRESULT Cube::CreateData(ID3D11Device* d3dDevice) {
 		return hr;
 	}
 
-	constantMatrix.world = DirectX::XMMatrixRotationY(45.0f);
-	constantMatrix.world *= DirectX::XMMatrixTranslation(0, 0, 5);
-	constantMatrix.world = DirectX::XMMatrixTranspose(constantMatrix.world);
-
-	DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 1.0f, -5.0f, 0.0f);
-	DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	constantMatrix.view = DirectX::XMMatrixLookAtLH(eye, at, up);
-	constantMatrix.view = DirectX::XMMatrixTranspose(constantMatrix.view);
-
-	constantMatrix.projection = DirectX::XMMatrixPerspectiveFovLH
-	(
-		DirectX::XM_PIDIV2,
-		1920 / (FLOAT)1080,
-		0.01f,
-		100.0f
-	);
-	constantMatrix.projection = DirectX::XMMatrixTranspose(constantMatrix.projection);
+	objectBuffer.world = DirectX::XMMatrixRotationY(45.0f);
+	objectBuffer.world *= DirectX::XMMatrixTranslation(0, 0, 5);
+	objectBuffer.world = DirectX::XMMatrixTranspose(objectBuffer.world);
 }
 
 void Cube::BindData(ID3D11DeviceContext* d3dContext) {
@@ -165,12 +150,14 @@ void Cube::Update(float deltaTime) {
 	
 }
 
-void Cube::Render(ID3D11DeviceContext* d3dContext) {
-	d3dContext->VSSetShader(vertexShader.Get(), nullptr, 0);
-	d3dContext->VSSetConstantBuffers(0, 1, constantBuffer.GetAddressOf());
-	d3dContext->PSSetShader(pixelShader.Get(), nullptr, 0);
+void Cube::Render(ID3D11DeviceContext* d3dContext, Camera *camera) {
+	d3dContext->UpdateSubresource(constantBuffer.Get(), 0, nullptr, &objectBuffer, 0, 0);
 
-	d3dContext->UpdateSubresource(constantBuffer.Get(), 0, nullptr, &constantMatrix, 0, 0);
+	d3dContext->VSSetShader(vertexShader.Get(), nullptr, 0);
+	d3dContext->VSSetConstantBuffers(0, 1, camera->getConstantBuffer_PP());
+	d3dContext->VSSetConstantBuffers(1, 1, constantBuffer.GetAddressOf());
+
+	d3dContext->PSSetShader(pixelShader.Get(), nullptr, 0);
 
 	d3dContext->DrawIndexed(NUM_INDEX, 0, 0);
 }

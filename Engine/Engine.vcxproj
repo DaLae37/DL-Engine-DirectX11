@@ -154,9 +154,11 @@ copy "$(TargetDir)" "$(ProjectDIr)Lib\Release\"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Header\Application.h" />
+    <ClInclude Include="Header\Camera.h" />
     <ClInclude Include="Header\Cube.h" />
     <ClInclude Include="Header\Device.h" />
     <ClInclude Include="Header\ImageUI.h" />
+    <ClInclude Include="Header\InputManager.h" />
     <ClInclude Include="Header\Object.h" />
     <ClInclude Include="Header\ObjectManager.h" />
     <ClInclude Include="Header\pch.h" />
@@ -168,9 +170,11 @@ copy "$(TargetDir)" "$(ProjectDIr)Lib\Release\"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="ImageUI.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="pch.cpp">
@@ -184,7 +188,7 @@ copy "$(TargetDir)" "$(ProjectDIr)Lib\Release\"</Command>
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\Cube.hlsli" />
+    <None Include="Shader\Object.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\Cube_PS.hlsl">

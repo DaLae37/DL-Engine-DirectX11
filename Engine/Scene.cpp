@@ -2,20 +2,22 @@
 #include "Scene.h"
 
 Scene::Scene() {
-
+	mainCamera = std::make_unique<Camera>();
+	ObjectManagerInstance->CreateCamera(mainCamera.get());
 }
 
 Scene::~Scene() {
 
 }
 
-void Scene::Update(float dTime) {
-
+void Scene::Update(float deltaTime) {
+	mainCamera->Update(deltaTime);
 }
 
 void Scene::RenderObject(ID3D11DeviceContext* d3dContext) {
+	mainCamera->Render(d3dContext);
 	for (Object* object : objectList) {
-		object->Render(d3dContext);
+		object->Render(d3dContext, mainCamera.get());
 	}
 }
 

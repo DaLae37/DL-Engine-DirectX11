@@ -6,7 +6,9 @@ TextureManager::TextureManager() {
 }
 
 TextureManager::~TextureManager() {
-
+	for (auto iter = d2dTextureMap.begin(); iter != d2dTextureMap.end(); iter++) {
+		SAFE_COMPTR_DELETE(iter->second);
+	}
 }
 
 TextureManager* TextureManager::getInstance() {
@@ -21,11 +23,11 @@ void TextureManager::Init(ID2D1DeviceContext* d2dContext, IWICImagingFactory* wi
 	this->isInit = true;
 }
 
-std::shared_ptr<ID2D1Bitmap> TextureManager::LoadD2DTextureFromFile(const wchar_t* path) {
+ID2D1Bitmap* TextureManager::LoadD2DTextureFromFile(const wchar_t* path) {
 	HRESULT hr = HRESULT();
 
 	if (d2dTextureMap[path] == nullptr) {
-		ID2D1Bitmap *texture = nullptr;
+		WRL::ComPtr<ID2D1Bitmap> texture = nullptr;
 
 		hr = wicFactory->CreateDecoderFromFilename(path, nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, wicDecoder.GetAddressOf());
 		if (SUCCEEDED(hr)) {
@@ -38,17 +40,17 @@ std::shared_ptr<ID2D1Bitmap> TextureManager::LoadD2DTextureFromFile(const wchar_
 			hr = wicConverter->Initialize(wicFrame.Get(), GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone, nullptr, 0.f, WICBitmapPaletteTypeCustom);
 		}
 		if (SUCCEEDED(hr)) {
-			hr = d2dContext->CreateBitmapFromWicBitmap(wicConverter.Get(), nullptr, &texture);
+			hr = d2dContext->CreateBitmapFromWicBitmap(wicConverter.Get(), nullptr, texture.GetAddressOf());
 		}
 		if (SUCCEEDED(hr)) {
-			d2dTextureMap[path] = std::shared_ptr<ID2D1Bitmap>(texture);
+			d2dTextureMap[path].Attach(texture.Detach());
 		}
 	}
 
-	return d2dTextureMap[path];
+	return d2dTextureMap[path].Get();
 }
 
-std::shared_ptr<ID3D11Texture2D> TextureManager::LoadD3DTextureFromFile(const wchar_t* path) {
+ID3D11Texture2D* TextureManager::LoadD3DTextureFromFile(const wchar_t* path) {
 	HRESULT hr = HRESULT();
 
 	if (d3dTextureMap[path] == nullptr) {
@@ -89,5 +91,5 @@ std::shared_ptr<ID3D11Texture2D> TextureManager::LoadD3DTextureFromFile(const wc
 		initData.SysMemPitch = width * 4;
 	}
 
-	return d3dTextureMap[path];	
+	return d3dTextureMap[path].Get();	
 }

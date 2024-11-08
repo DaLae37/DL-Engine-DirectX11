@@ -1,9 +1,13 @@
-cbuffer ConstantBuffer : register(b0)
+cbuffer CameraBuffer : register(b0)
 {
-    matrix world;
     matrix view;
     matrix projection;
 };
+
+cbuffer ObjectBuffer : register(b1)
+{
+    matrix World;
+}
 
 struct VS_INPUT
 {

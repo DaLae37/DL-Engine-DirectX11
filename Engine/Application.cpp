@@ -25,12 +25,12 @@ HRESULT Application::InitApplication() {
 		return E_FAIL;
 	}
 
-	if (device->InitD3D11Device(window->getWindowHandle()) != S_OK) {
+	if (device->InitD3D11Device(*window->getWindowHandle()) != S_OK) {
 		std::wstring message = L"InitD3DDevice Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
 		return E_FAIL;
 	}
-	if (device->InitD2DDevice(window->getWindowHandle()) != S_OK) {
+	if (device->InitD2DDevice(*window->getWindowHandle()) != S_OK) {
 		std::wstring message = L"InitD2DDevice Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
 		return E_FAIL;
@@ -77,6 +77,13 @@ HRESULT Application::InitManager() {
 
 	SceneManagerInstance->Init(device->getD3DContext(), device->getD2DContext());
 	if (SceneManagerInstance->getInstance() == nullptr) {
+		std::wstring message = L"Init SceneManager Failed\n" + std::to_wstring(GetLastError());
+		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
+		return E_FAIL;
+	}
+
+	InputManagerInstance->Init(window->getWindowHandle());
+	if (InputManagerInstance->getInstance() == nullptr) {
 		std::wstring message = L"Init SceneManager Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
 		return E_FAIL;

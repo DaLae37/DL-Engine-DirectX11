@@ -23,5 +23,6 @@ public:
 
 	void Init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext);
 
-	Object* CreateObject(Object* object);
+	void CreateObject(Object* object);
+	void CreateCamera(Camera* camera);
 };

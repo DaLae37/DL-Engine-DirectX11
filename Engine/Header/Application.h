@@ -7,6 +7,7 @@
 #include "SceneManager.h"
 #include "ObjectManager.h"
 #include "TextureManager.h"
+#include "InputManager.h"
 
 class Application {
 private:

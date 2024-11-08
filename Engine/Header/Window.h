@@ -17,5 +17,5 @@ public :
 	HRESULT FloatWindow();
 
 	void WindowLoop();
-	HWND getWindowHandle();
+	HWND *getWindowHandle();
 };

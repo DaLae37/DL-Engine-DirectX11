@@ -21,11 +21,13 @@ void ObjectManager::Init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContex
 	this->isInit = true;
 }
 
-Object* ObjectManager::CreateObject(Object* object) {
+void ObjectManager::CreateObject(Object* object) {
 	object->CreatePipeline(d3dDevice);
 	object->CreateData(d3dDevice);
 	
 	object->BindData(d3dContext);
+}
 
-	return object;
+void ObjectManager::CreateCamera(Camera* camera) {
+	camera->CreateConstantBuffer(d3dDevice);
 }

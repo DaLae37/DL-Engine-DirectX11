@@ -5,7 +5,8 @@ MainScene::MainScene() {
 	AddUI(ui1);
 	ui1->SetPos(D2D_POINT_2F{ 100,100 });
 
-	cube = dynamic_cast<Cube*>(ObjectManagerInstance->CreateObject(new Cube()));
+	cube = new Cube();
+	ObjectManagerInstance->CreateObject(cube);
 	AddObject(cube);
 }
 

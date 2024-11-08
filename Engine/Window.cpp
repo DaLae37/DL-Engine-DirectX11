@@ -71,6 +71,6 @@ void Window::WindowLoop() {
 	
 }
 
-HWND Window::getWindowHandle() {
-	return this->hWnd;
+HWND* Window::getWindowHandle() {
+	return &this->hWnd;
 }
