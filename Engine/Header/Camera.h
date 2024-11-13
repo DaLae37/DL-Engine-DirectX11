@@ -31,7 +31,6 @@ public :
 
 	virtual HRESULT CreateConstantBuffer(ID3D11Device* d3dDevice);
 
-	ID3D11Buffer* getConstantBuffer_P();
-	ID3D11Buffer** getConstantBuffer_PP();
+	WRL::ComPtr<ID3D11Buffer> getConstantBuffer();
 	const CameraBuffer* getCameraBuffer();
 };

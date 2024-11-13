@@ -13,7 +13,7 @@ private:
 
 	bool isInit = false;
 
-	// Get pointer from device
+	// Get raw pointer from device
 	ID3D11Device* d3dDevice = nullptr;
 	ID3D11DeviceContext* d3dContext = nullptr;
 public:

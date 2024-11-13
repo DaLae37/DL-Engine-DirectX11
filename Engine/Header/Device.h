@@ -20,7 +20,6 @@ private :
 	WRL::ComPtr<ID2D1Device> d2dDevice = nullptr;
 	WRL::ComPtr<ID2D1DeviceContext> d2dContext = nullptr;
 	WRL::ComPtr<ID2D1Bitmap1> d2dRenderTarget = nullptr;
-	IWICImagingFactory* wicFactory = nullptr;
 public :
 	Device();
 	~Device();
@@ -31,9 +30,8 @@ public :
 	HRESULT InitD3D11Device(HWND hWnd);
 	HRESULT InitD2DDevice(HWND hWnd);
 
-	ID3D11Device* getD3DDevice();
-	ID3D11DeviceContext* getD3DContext();
+	WRL::ComPtr<ID3D11Device> getD3DDevice();
+	WRL::ComPtr<ID3D11DeviceContext> getD3DContext();
 
-	ID2D1DeviceContext* getD2DContext();
-	IWICImagingFactory* getWicFactory();
+	WRL::ComPtr<ID2D1DeviceContext> getD2DContext();
 };

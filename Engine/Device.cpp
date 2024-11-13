@@ -209,27 +209,17 @@ HRESULT Device::InitD2DDevice(HWND hWnd) {
     // Setting D2D RenderTarget
     d2dContext->SetTarget(d2dRenderTarget.Get());
 
-    // Create WICFactory
-    hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&wicFactory));
-    if (FAILED(hr)) {
-        return hr;
-    }
-
     return S_OK;
 }
 
-ID3D11Device* Device::getD3DDevice() {
-    return this->d3dDevice.Get();
+WRL::ComPtr<ID3D11Device> Device::getD3DDevice() {
+    return this->d3dDevice;
 }
 
-ID3D11DeviceContext* Device::getD3DContext() {
-    return this->d3dContext.Get();
+WRL::ComPtr<ID3D11DeviceContext> Device::getD3DContext() {
+    return this->d3dContext;
 }
 
-ID2D1DeviceContext* Device::getD2DContext() {
-    return this->d2dContext.Get();
-}
-
-IWICImagingFactory* Device::getWicFactory() {
-    return wicFactory;
+WRL::ComPtr<ID2D1DeviceContext> Device::getD2DContext() {
+    return this->d2dContext;
 }

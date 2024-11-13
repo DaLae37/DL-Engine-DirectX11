@@ -56,26 +56,25 @@ INT Application::DoMainLoop() {
 			device->RenderEnd();
 		}
 	}
-
 	return static_cast<INT>(Message.wParam);
 }
 
 HRESULT Application::InitManager() {
-	TextureManagerInstance->Init(device->getD2DContext(), device->getWicFactory());
+	TextureManagerInstance->Init(device->getD2DContext().Get());
 	if (TextureManagerInstance->getInstance() == nullptr) {
 		std::wstring message = L"Init TextureManager Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
 		return E_FAIL;
 	}
 
-	ObjectManagerInstance->Init(device->getD3DDevice(), device->getD3DContext());
+	ObjectManagerInstance->Init(device->getD3DDevice().Get(), device->getD3DContext().Get());
 	if (ObjectManagerInstance->getInstance() == nullptr) {
 		std::wstring message = L"Init ObjectManager Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
 		return E_FAIL;
 	}
 
-	SceneManagerInstance->Init(device->getD3DContext(), device->getD2DContext());
+	SceneManagerInstance->Init(device->getD3DContext().Get(), device->getD2DContext().Get());
 	if (SceneManagerInstance->getInstance() == nullptr) {
 		std::wstring message = L"Init SceneManager Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);

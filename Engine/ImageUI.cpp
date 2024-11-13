@@ -2,7 +2,7 @@
 #include "ImageUI.h"
 
 ImageUI::ImageUI(const wchar_t* path) {
-	texture = TextureManagerInstance->LoadD2DTextureFromFile(path);
+	texture = TextureManagerInstance->LoadD2DTextureFromFile(path).Get();
 	if (texture != nullptr) {
 		D2D_SIZE_U textureSize = texture->GetPixelSize();
 		width = textureSize.width;

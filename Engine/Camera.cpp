@@ -43,12 +43,8 @@ void Camera::Render(ID3D11DeviceContext* d3dContext) {
     d3dContext->UpdateSubresource(constantBuffer.Get(), 0, nullptr, &cameraBuffer, 0, 0);
 }
 
-ID3D11Buffer** Camera::getConstantBuffer_PP() {
-    return this->constantBuffer.GetAddressOf();
-}
-
-ID3D11Buffer* Camera::getConstantBuffer_P() {
-    return this->constantBuffer.Get();
+WRL::ComPtr<ID3D11Buffer> Camera::getConstantBuffer() {
+    return this->constantBuffer;
 }
 
 const CameraBuffer* Camera::getCameraBuffer() {

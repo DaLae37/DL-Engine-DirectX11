@@ -15,7 +15,7 @@ private :
 
 	Scene *currentScene = nullptr;
 	
-	// Get pointer from device
+	// Get raw pointer from device
 	ID2D1DeviceContext* d2dContext = nullptr;
 	ID3D11DeviceContext* d3dContext = nullptr;
 public :

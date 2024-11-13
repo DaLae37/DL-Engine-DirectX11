@@ -154,7 +154,7 @@ void Cube::Render(ID3D11DeviceContext* d3dContext, Camera *camera) {
 	d3dContext->UpdateSubresource(constantBuffer.Get(), 0, nullptr, &objectBuffer, 0, 0);
 
 	d3dContext->VSSetShader(vertexShader.Get(), nullptr, 0);
-	d3dContext->VSSetConstantBuffers(0, 1, camera->getConstantBuffer_PP());
+	d3dContext->VSSetConstantBuffers(0, 1, camera->getConstantBuffer().GetAddressOf());
 	d3dContext->VSSetConstantBuffers(1, 1, constantBuffer.GetAddressOf());
 
 	d3dContext->PSSetShader(pixelShader.Get(), nullptr, 0);

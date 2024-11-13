@@ -6,9 +6,12 @@ TextureManager::TextureManager() {
 }
 
 TextureManager::~TextureManager() {
-	for (auto iter = d2dTextureMap.begin(); iter != d2dTextureMap.end(); iter++) {
-		SAFE_COMPTR_DELETE(iter->second);
-	}
+	d2dTextureMap.clear();
+	d3dTextureMap.clear();
+
+	SAFE_RELEASE(wicFactory);
+
+	CoUninitialize();
 }
 
 TextureManager* TextureManager::getInstance() {
@@ -16,18 +19,30 @@ TextureManager* TextureManager::getInstance() {
 	return &instance;
 }
 
-void TextureManager::Init(ID2D1DeviceContext* d2dContext, IWICImagingFactory* wicFactory) {
+void TextureManager::Init(ID2D1DeviceContext* d2dContext) {
 	this->d2dContext = d2dContext;
-	this->wicFactory = wicFactory;
+
+	if (wicFactory == nullptr) {
+		HRESULT hr = HRESULT();
+		hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+		// Create WICFactory
+		hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&wicFactory));
+		if (FAILED(hr)) {
+			return;
+		}
+	}
 
 	this->isInit = true;
 }
 
-ID2D1Bitmap* TextureManager::LoadD2DTextureFromFile(const wchar_t* path) {
+WRL::ComPtr<ID2D1Bitmap> TextureManager::LoadD2DTextureFromFile(const wchar_t* path) {
 	HRESULT hr = HRESULT();
 
 	if (d2dTextureMap[path] == nullptr) {
 		WRL::ComPtr<ID2D1Bitmap> texture = nullptr;
+		WRL::ComPtr<IWICBitmapDecoder> wicDecoder = nullptr;
+		WRL::ComPtr<IWICBitmapFrameDecode> wicFrame = nullptr;
+		WRL::ComPtr<IWICFormatConverter> wicConverter = nullptr;
 
 		hr = wicFactory->CreateDecoderFromFilename(path, nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, wicDecoder.GetAddressOf());
 		if (SUCCEEDED(hr)) {
@@ -47,14 +62,17 @@ ID2D1Bitmap* TextureManager::LoadD2DTextureFromFile(const wchar_t* path) {
 		}
 	}
 
-	return d2dTextureMap[path].Get();
+	return d2dTextureMap[path];
 }
 
-ID3D11Texture2D* TextureManager::LoadD3DTextureFromFile(const wchar_t* path) {
+WRL::ComPtr<ID3D11Texture2D> TextureManager::LoadD3DTextureFromFile(const wchar_t* path) {
 	HRESULT hr = HRESULT();
 
 	if (d3dTextureMap[path] == nullptr) {
 		WRL::ComPtr<ID3D11Texture2D> texture = nullptr;
+		WRL::ComPtr<IWICBitmapDecoder> wicDecoder = nullptr;
+		WRL::ComPtr<IWICBitmapFrameDecode> wicFrame = nullptr;
+		WRL::ComPtr<IWICFormatConverter> wicConverter = nullptr;
 
 		hr = wicFactory->CreateDecoderFromFilename(path, nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, wicDecoder.GetAddressOf());
 		if (SUCCEEDED(hr)) {
@@ -91,5 +109,5 @@ ID3D11Texture2D* TextureManager::LoadD3DTextureFromFile(const wchar_t* path) {
 		initData.SysMemPitch = width * 4;
 	}
 
-	return d3dTextureMap[path].Get();	
+	return d3dTextureMap[path];	
 }
