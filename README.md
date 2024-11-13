@@ -2,7 +2,7 @@
 DirectX11 Based 2D/3D Rendering Framework
 
 # Plugin
-## [ASSIMP](https://github.com/assimp/assimp)
+### [ASSIMP](https://github.com/assimp/assimp)
 ```text
 Our license is based on the modified, 3-clause BSD-License.
 
