@@ -18,8 +18,8 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	case WM_CLOSE:
 		if (MessageBoxEx(hWnd, L"Exit Program?", PROGRAM_NAME, MB_OKCANCEL, NULL) == IDOK) {
 			DestroyWindow(hWnd);
-			return 0;
-		}		
+		}
+		return 0;
 	}
 
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);

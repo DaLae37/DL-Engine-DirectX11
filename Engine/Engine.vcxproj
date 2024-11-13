@@ -115,7 +115,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Header\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(SolutionDir)Plugin\Assimp\Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -124,8 +124,13 @@
     </Link>
     <PostBuildEvent>
       <Command>mkdir "$(ProjectDIr)Lib\Debug\"
-copy "$(TargetDir)" "$(ProjectDIr)Lib\Debug\"</Command>
+copy "$(TargetDir)" "$(ProjectDIr)Lib\Debug\"
+xcopy /y /d "$(SolutionDir)\Plugin\Assimp\Binary\Debug\assimp-vc143-mtd.dll" "$(SolutionDir)\Build\Debug\"</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Plugin\Assimp\Lib\Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -138,7 +143,7 @@ copy "$(TargetDir)" "$(ProjectDIr)Lib\Debug\"</Command>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Header\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Header\;$(SolutionDir)Plugin\Assimp\Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -149,8 +154,15 @@ copy "$(TargetDir)" "$(ProjectDIr)Lib\Debug\"</Command>
     </Link>
     <PostBuildEvent>
       <Command>mkdir "$(ProjectDIr)Lib\Release\"
-copy "$(TargetDir)" "$(ProjectDIr)Lib\Release\"</Command>
+copy "$(TargetDir)" "$(ProjectDIr)Lib\Release\"
+xcopy /y /d "$(SolutionDir)\Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$(SolutionDir)\Build\Release\"</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)Plugin\Assimp\Lib\Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Header\Application.h" />

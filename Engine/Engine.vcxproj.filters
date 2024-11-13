@@ -37,6 +37,12 @@
     <Filter Include="헤더 파일\Manager">
       <UniqueIdentifier>{8fadc08e-01c5-4340-ac27-db632607429d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\UI">
+      <UniqueIdentifier>{f2234123-b80c-4672-95da-011f5e465733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\UI">
+      <UniqueIdentifier>{7b50cdc1-7858-4a08-b180-9f164c5280ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\pch.h">
@@ -57,12 +63,6 @@
     <ClInclude Include="Header\SceneManager.h">
       <Filter>헤더 파일\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Header\UI.h">
-      <Filter>헤더 파일\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ImageUI.h">
-      <Filter>헤더 파일\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Cube.h">
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
@@ -80,6 +80,12 @@
     </ClInclude>
     <ClInclude Include="Header\InputManager.h">
       <Filter>헤더 파일\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI.h">
+      <Filter>헤더 파일\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ImageUI.h">
+      <Filter>헤더 파일\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -104,12 +110,6 @@
     <ClCompile Include="Object.cpp">
       <Filter>소스 파일\Obect</Filter>
     </ClCompile>
-    <ClCompile Include="UI.cpp">
-      <Filter>소스 파일\Obect</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageUI.cpp">
-      <Filter>소스 파일\Obect</Filter>
-    </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>소스 파일\Obect</Filter>
     </ClCompile>
@@ -124,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>소스 파일\Managr</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>소스 파일\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageUI.cpp">
+      <Filter>소스 파일\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
