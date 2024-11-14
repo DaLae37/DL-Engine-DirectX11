@@ -12,7 +12,7 @@ protected :
 	float rotation;
 	D2D_POINT_2F pos;
 public :
-	UI();
+	explicit UI();
 	virtual ~UI();
 
 	virtual void Update(float dTime) = 0;

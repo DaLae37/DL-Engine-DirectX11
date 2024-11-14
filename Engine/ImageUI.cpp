@@ -1,7 +1,12 @@
 #include "pch.h"
 #include "ImageUI.h"
 
-ImageUI::ImageUI(const wchar_t* path) {
+ImageUI::ImageUI(const std::filesystem::path& path) {
+	this->path = path;
+	width = 0;
+	height = 0;
+	color = D2D_COLOR_F{ 1.0f, 1.0f, 1.0f, 1.0f };
+
 	texture = TextureManagerInstance->LoadD2DTextureFromFile(path).Get();
 	if (texture != nullptr) {
 		D2D_SIZE_U textureSize = texture->GetPixelSize();
@@ -19,7 +24,6 @@ ImageUI::ImageUI(const wchar_t* path) {
 		rect.right = width;
 		rect.bottom = height;
 	}
-	color = D2D_COLOR_F{ 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
 ImageUI::~ImageUI() {

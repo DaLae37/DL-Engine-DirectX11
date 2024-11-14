@@ -23,7 +23,7 @@ protected :
 
 	ObjectBuffer objectBuffer;
 public :
-	Object();
+	explicit Object();
 	virtual ~Object();
 
 	virtual void Update(float deltaTime) = 0;

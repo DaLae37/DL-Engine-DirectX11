@@ -1,5 +1,4 @@
 #pragma once
-#include "pch.h"
 #include "UI.h"
 #include "TextureManager.h"
 
@@ -10,10 +9,10 @@ private :
 	int width;
 	int height;
 
-	const wchar_t* path;
+	std::filesystem::path path;
 	ID2D1Bitmap* texture;
 public :
-	ImageUI(const wchar_t* path);
+	ImageUI(const std::filesystem::path& path);
 	~ImageUI();
 
 	void Update(float deltaTime);

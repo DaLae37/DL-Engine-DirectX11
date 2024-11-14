@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 ## Include Plugin Files
 !/Plugin/**
+!/Game/Resources/**

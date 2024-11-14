@@ -18,7 +18,7 @@ HRESULT Object::CompileShaderFromFile(const wchar_t* path, const char* entryPoin
 	hr = D3DCompileFromFile(
 		static_cast<LPCWSTR>(path), // Shader File Name
 		nullptr, // Shader Macros
-		nullptr, // Include Files
+		D3D_COMPILE_STANDARD_FILE_INCLUDE, // Include Files
 		static_cast<LPCSTR>(entryPoint), // Entry Point
 		static_cast<LPCSTR>(shaderModel), // Shader Target
 		dwShaderFlags, // Flag1

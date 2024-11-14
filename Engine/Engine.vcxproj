@@ -125,7 +125,7 @@
     <PostBuildEvent>
       <Command>mkdir "$(ProjectDIr)Lib\Debug\"
 copy "$(TargetDir)" "$(ProjectDIr)Lib\Debug\"
-xcopy /y /d "$(SolutionDir)\Plugin\Assimp\Binary\Debug\assimp-vc143-mtd.dll" "$(SolutionDir)\Build\Debug\"</Command>
+xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Debug\assimp-vc143-mtd.dll" "$(SolutionDir)\Build\Debug\"</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -155,7 +155,7 @@ xcopy /y /d "$(SolutionDir)\Plugin\Assimp\Binary\Debug\assimp-vc143-mtd.dll" "$(
     <PostBuildEvent>
       <Command>mkdir "$(ProjectDIr)Lib\Release\"
 copy "$(TargetDir)" "$(ProjectDIr)Lib\Release\"
-xcopy /y /d "$(SolutionDir)\Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$(SolutionDir)\Build\Release\"</Command>
+xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$(SolutionDir)\Build\Release\"</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -171,6 +171,7 @@ xcopy /y /d "$(SolutionDir)\Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$
     <ClInclude Include="Header\Device.h" />
     <ClInclude Include="Header\ImageUI.h" />
     <ClInclude Include="Header\InputManager.h" />
+    <ClInclude Include="Header\Model.h" />
     <ClInclude Include="Header\Object.h" />
     <ClInclude Include="Header\ObjectManager.h" />
     <ClInclude Include="Header\pch.h" />
@@ -187,6 +188,7 @@ xcopy /y /d "$(SolutionDir)\Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="ImageUI.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="pch.cpp">

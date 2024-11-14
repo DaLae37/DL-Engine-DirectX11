@@ -6,13 +6,13 @@ cbuffer CameraBuffer : register(b0)
 
 cbuffer ObjectBuffer : register(b1)
 {
-    matrix World;
-}
+    matrix world;
+};
 
 struct VS_INPUT
 {
     float4 pos : POSITION;
-    float4 color : COLOR0;
+    float4 color : COLOR;
 };
 
 struct PS_INPUT

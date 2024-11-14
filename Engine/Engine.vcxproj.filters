@@ -43,6 +43,18 @@
     <Filter Include="소스 파일\UI">
       <UniqueIdentifier>{7b50cdc1-7858-4a08-b180-9f164c5280ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Obect\DefaultModel">
+      <UniqueIdentifier>{8bf51fa5-7c22-48f6-8d58-a585f633deac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Object\DefaultModel">
+      <UniqueIdentifier>{894581af-cacd-49ec-9381-95da6fced628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Obect\3DModel">
+      <UniqueIdentifier>{dc805fcb-3326-41ed-9bd1-2d3a659fe2d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Object\3DModel">
+      <UniqueIdentifier>{cc53992a-60c5-42ae-90cf-a255ee001569}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\pch.h">
@@ -63,17 +75,11 @@
     <ClInclude Include="Header\SceneManager.h">
       <Filter>헤더 파일\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Header\Cube.h">
-      <Filter>헤더 파일\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Header\Object.h">
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
     <ClInclude Include="Header\Camera.h">
       <Filter>헤더 파일\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Header\ObjectManager.h">
-      <Filter>헤더 파일\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Header\TextureManager.h">
       <Filter>헤더 파일\Manager</Filter>
@@ -86,6 +92,15 @@
     </ClInclude>
     <ClInclude Include="Header\ImageUI.h">
       <Filter>헤더 파일\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Cube.h">
+      <Filter>헤더 파일\Object\DefaultModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Model.h">
+      <Filter>헤더 파일\Object\3DModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\ObjectManager.h">
+      <Filter>헤더 파일\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -110,14 +125,8 @@
     <ClCompile Include="Object.cpp">
       <Filter>소스 파일\Obect</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>소스 파일\Obect</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>소스 파일\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectManager.cpp">
-      <Filter>소스 파일\Managr</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
       <Filter>소스 파일\Managr</Filter>
@@ -130,6 +139,15 @@
     </ClCompile>
     <ClCompile Include="ImageUI.cpp">
       <Filter>소스 파일\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>소스 파일\Obect\DefaultModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>소스 파일\Obect\3DModel</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>소스 파일\Obect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

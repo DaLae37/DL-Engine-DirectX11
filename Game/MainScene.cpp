@@ -1,17 +1,21 @@
 #include "MainScene.h"
 
 MainScene::MainScene() {
-	ui1 = new ImageUI(L"Resources/Images/dl-logo.png");
-	AddUI(ui1);
-	ui1->SetPos(D2D_POINT_2F{ 100,100 });
+	ui = new ImageUI(L"Resources/Images/dl-logo.png");
+	AddUI(ui);
+	ui->SetPos(D2D_POINT_2F{ 100,100 });
 
 	cube = new Cube();
 	ObjectManagerInstance->CreateObject(cube);
 	AddObject(cube);
+
+	model = new Model(L"Resources/Models/cat.obj");
+	ObjectManagerInstance->CreateObject(model);
+	AddObject(model);
 }
 
 MainScene::~MainScene() {
-	SAFE_DELETE(ui1);
+	SAFE_DELETE(ui);
 	SAFE_DELETE(cube);
 }
 
