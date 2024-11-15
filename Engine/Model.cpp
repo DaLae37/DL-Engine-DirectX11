@@ -14,21 +14,18 @@ HRESULT Model::CreatePipeline(ID3D11Device* d3dDevice) {
 
 	WRL::ComPtr<ID3DBlob> vertexShaderBlob = nullptr;
 	hr = CompileShaderFromFile(L"../Engine/Shader/Model_VS.hlsl", "main", "vs_5_0", vertexShaderBlob.GetAddressOf());
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
 		SAFE_RELEASE(vertexShaderBlob);
 		return hr;
 	}
 
 	hr = d3dDevice->CreateVertexShader(vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), nullptr, vertexShader.GetAddressOf());
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
 		SAFE_RELEASE(vertexShader);
 		return hr;
 	}
 
-	D3D11_INPUT_ELEMENT_DESC layouts[] =
-	{
+	D3D11_INPUT_ELEMENT_DESC layouts[] = {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -36,23 +33,20 @@ HRESULT Model::CreatePipeline(ID3D11Device* d3dDevice) {
 	UINT numElements = ARRAYSIZE(layouts);
 
 	hr = d3dDevice->CreateInputLayout(layouts, numElements, vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), vertexLayout.GetAddressOf());
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
 		SAFE_RELEASE(vertexLayout);
 		return hr;
 	}
 
 	WRL::ComPtr<ID3DBlob> pixelShaderBlob = nullptr;
 	hr = CompileShaderFromFile(L"../Engine/Shader/Model_PS.hlsl", "main", "ps_5_0", pixelShaderBlob.GetAddressOf());
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
 		SAFE_RELEASE(pixelShaderBlob);
 		return hr;
 	}
 
 	hr = d3dDevice->CreatePixelShader(pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize(), nullptr, pixelShader.GetAddressOf());
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
 		SAFE_RELEASE(pixelShader);
 		return hr;
 	}
@@ -69,9 +63,6 @@ HRESULT Model::CreateData(ID3D11Device* d3dDevice) {
 	if (!scene || !scene->HasMeshes()) {
 		OutputDebugStringA(importer.GetErrorString());
 		return E_FAIL;
-	}
-	else {
-
 	}
 
 	// Create Vertex Buffer
@@ -98,8 +89,7 @@ HRESULT Model::CreateData(ID3D11Device* d3dDevice) {
 	initData.pSysMem = vertices.data();
 
 	hr = d3dDevice->CreateBuffer(&bufferDesc, &initData, vertexBuffer.GetAddressOf());
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
 		SAFE_RELEASE(vertexBuffer);
 		return hr;
 	}

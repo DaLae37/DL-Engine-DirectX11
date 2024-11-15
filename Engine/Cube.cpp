@@ -14,15 +14,13 @@ HRESULT Cube::CreatePipeline(ID3D11Device* d3dDevice) {
 
 	WRL::ComPtr<ID3DBlob> vertexShaderBlob = nullptr;
 	hr = CompileShaderFromFile(L"../Engine/Shader/Cube_VS.hlsl", "main", "vs_5_0", vertexShaderBlob.GetAddressOf());
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
 		SAFE_RELEASE(vertexShaderBlob);
 		return hr;
 	}
 
 	hr = d3dDevice->CreateVertexShader(vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), nullptr, vertexShader.GetAddressOf());
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
 		SAFE_RELEASE(vertexShader);
 		return hr;
 	}
@@ -35,23 +33,20 @@ HRESULT Cube::CreatePipeline(ID3D11Device* d3dDevice) {
 	UINT numElements = ARRAYSIZE(layouts);
 
 	hr = d3dDevice->CreateInputLayout(layouts, numElements, vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), vertexLayout.GetAddressOf());
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
 		SAFE_RELEASE(vertexLayout);
 		return hr;
 	}
 
 	WRL::ComPtr<ID3DBlob> pixelShaderBlob = nullptr;
 	hr = CompileShaderFromFile(L"../Engine/Shader/Cube_PS.hlsl", "main", "ps_5_0", pixelShaderBlob.GetAddressOf());
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
 		SAFE_RELEASE(pixelShaderBlob);
 		return hr;
 	}
 
 	hr = d3dDevice->CreatePixelShader(pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize(), nullptr, pixelShader.GetAddressOf());
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
 		SAFE_RELEASE(pixelShader);
 		return hr;
 	}
@@ -85,8 +80,7 @@ HRESULT Cube::CreateData(ID3D11Device* d3dDevice) {
 	initData.pSysMem = vertices;
 
 	hr = d3dDevice->CreateBuffer(&bufferDesc, &initData, vertexBuffer.GetAddressOf());
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
 		SAFE_RELEASE(vertexBuffer);
 		return hr;
 	}
