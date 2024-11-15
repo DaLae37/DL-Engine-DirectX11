@@ -15,5 +15,4 @@ public :
 
 	HRESULT CreatePipeline(ID3D11Device* d3dDevice);
 	HRESULT CreateData(ID3D11Device* d3dDevice);
-	void BindData(ID3D11DeviceContext* d3dContext);
 };

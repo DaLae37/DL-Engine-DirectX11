@@ -102,6 +102,9 @@
     <ClInclude Include="Header\ObjectManager.h">
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
+    <ClInclude Include="Header\Material.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneManager.cpp">
@@ -149,8 +152,17 @@
     <ClCompile Include="ObjectManager.cpp">
       <Filter>소스 파일\Obect</Filter>
     </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>소스 파일\Obect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shader\Model.hlsli">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="Shader\Polygon.hlsli">
+      <Filter>리소스 파일</Filter>
+    </None>
     <None Include="Shader\Object.hlsli">
       <Filter>리소스 파일</Filter>
     </None>
@@ -160,6 +172,12 @@
       <Filter>리소스 파일</Filter>
     </FxCompile>
     <FxCompile Include="Shader\Cube_VS.hlsl">
+      <Filter>리소스 파일</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Model_PS.hlsl">
+      <Filter>리소스 파일</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Model_VS.hlsl">
       <Filter>리소스 파일</Filter>
     </FxCompile>
   </ItemGroup>

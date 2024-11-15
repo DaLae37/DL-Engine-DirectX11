@@ -15,13 +15,13 @@ private:
 
 	// Get raw pointer from device
 	ID3D11Device* d3dDevice = nullptr;
-	ID3D11DeviceContext* d3dContext = nullptr;
+
 public:
 	~ObjectManager();
 
 	static ObjectManager* getInstance();
 
-	void Init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext);
+	void Init(ID3D11Device* d3dDevice);
 
 	void CreateObject(Object* object);
 	void CreateCamera(Camera* camera);

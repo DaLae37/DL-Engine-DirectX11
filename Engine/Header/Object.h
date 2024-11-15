@@ -2,9 +2,16 @@
 #include "pch.h"
 #include "Camera.h"
 
-struct Vertex {
+struct PolygonVertex {
 	DirectX::XMFLOAT4 pos;
 	DirectX::XMFLOAT4 color;
+};
+
+struct ModelVertex
+{
+	DirectX::XMFLOAT4 Position;
+	DirectX::XMFLOAT2 TexCoord;
+	DirectX::XMFLOAT3 Normal;
 };
 
 struct ObjectBuffer {
@@ -21,6 +28,8 @@ protected :
 	WRL::ComPtr<ID3D11Buffer> indexBuffer = nullptr;
 	WRL::ComPtr<ID3D11Buffer> constantBuffer = nullptr;
 
+	std::vector<UINT> indices;
+
 	ObjectBuffer objectBuffer;
 public :
 	explicit Object();
@@ -31,7 +40,6 @@ public :
 
 	virtual HRESULT CreatePipeline(ID3D11Device* d3dDevice) = 0;
 	virtual HRESULT CreateData(ID3D11Device* d3dDevice) = 0;
-	virtual void BindData(ID3D11DeviceContext* d3dContext) = 0;
 	
 	HRESULT CompileShaderFromFile(const wchar_t* path, const char* entryPoint, const char* shaderModel, ID3DBlob** blob);
 };

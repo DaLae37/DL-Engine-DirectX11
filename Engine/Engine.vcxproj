@@ -171,6 +171,7 @@ xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$(
     <ClInclude Include="Header\Device.h" />
     <ClInclude Include="Header\ImageUI.h" />
     <ClInclude Include="Header\InputManager.h" />
+    <ClInclude Include="Header\Material.h" />
     <ClInclude Include="Header\Model.h" />
     <ClInclude Include="Header\Object.h" />
     <ClInclude Include="Header\ObjectManager.h" />
@@ -188,6 +189,7 @@ xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$(
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="ImageUI.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
@@ -202,7 +204,9 @@ xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$(
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shader\Model.hlsli" />
     <None Include="Shader\Object.hlsli" />
+    <None Include="Shader\Polygon.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\Cube_PS.hlsl">
@@ -212,6 +216,18 @@ xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$(
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Shader\Cube_VS.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\Model_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shader\Model_VS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

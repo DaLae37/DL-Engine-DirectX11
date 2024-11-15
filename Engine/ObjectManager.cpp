@@ -14,9 +14,8 @@ ObjectManager* ObjectManager::getInstance() {
 	return &instance;
 }
 
-void ObjectManager::Init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext) {
+void ObjectManager::Init(ID3D11Device* d3dDevice) {
 	this->d3dDevice = d3dDevice;
-	this->d3dContext = d3dContext;
 
 	this->isInit = true;
 }
@@ -24,8 +23,6 @@ void ObjectManager::Init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContex
 void ObjectManager::CreateObject(Object* object) {
 	object->CreatePipeline(d3dDevice);
 	object->CreateData(d3dDevice);
-	
-	object->BindData(d3dContext);
 }
 
 void ObjectManager::CreateCamera(Camera* camera) {

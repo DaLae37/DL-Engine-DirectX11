@@ -12,6 +12,7 @@ class Model : public Object
 {
 private:
 	std::filesystem::path path;
+
 public :
 	Model(const std::filesystem::path &path);
 	~Model();
@@ -21,5 +22,4 @@ public :
 
 	HRESULT CreatePipeline(ID3D11Device* d3dDevice);
 	HRESULT CreateData(ID3D11Device* d3dDevice);
-	void BindData(ID3D11DeviceContext* d3dContext);
 };

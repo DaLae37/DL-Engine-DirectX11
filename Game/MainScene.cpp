@@ -17,6 +17,7 @@ MainScene::MainScene() {
 MainScene::~MainScene() {
 	SAFE_DELETE(ui);
 	SAFE_DELETE(cube);
+	SAFE_DELETE(model);
 }
 
 void MainScene::Update(float dTime){

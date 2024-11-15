@@ -9,95 +9,6 @@ Cube::~Cube() {
 
 }
 
-HRESULT Cube::CreateData(ID3D11Device* d3dDevice) {
-	HRESULT hr = HRESULT();
-	D3D11_BUFFER_DESC bufferDesc = D3D11_BUFFER_DESC();
-	D3D11_SUBRESOURCE_DATA initData = D3D11_SUBRESOURCE_DATA();
-
-	Vertex vertices[] = {
-		// Front
-		Vertex{DirectX::XMFLOAT4(-1.0f, 1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)},
-		Vertex{DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)},
-		Vertex{DirectX::XMFLOAT4(-1.0f, -1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f)},
-		Vertex{DirectX::XMFLOAT4(1.0f, -1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)},
-
-		// Back
-		Vertex{DirectX::XMFLOAT4(-1.0f, 1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f)},
-		Vertex{DirectX::XMFLOAT4(1.0f, 1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f)},
-		Vertex{DirectX::XMFLOAT4(-1.0f, -1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f)},
-		Vertex{DirectX::XMFLOAT4(1.0f, -1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f)}
-	};
-
-	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.ByteWidth = sizeof(Vertex) * NUM_VERTEX;
-	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bufferDesc.CPUAccessFlags = 0;
-	bufferDesc.MiscFlags = 0;
-
-	initData.pSysMem = vertices;
-
-	hr = d3dDevice->CreateBuffer(&bufferDesc, &initData, vertexBuffer.GetAddressOf());
-	if (FAILED(hr))
-	{
-		SAFE_RELEASE(vertexBuffer);
-		return hr;
-	}
-
-	WORD indices[] = {
-		//Front
-		0, 1, 2, 2, 1, 3,
-		//Up
-		1, 5, 3, 3, 5, 7,
-		//Right
-		2, 3, 7, 7, 6, 2,
-		//Down
-		4, 0, 2, 2, 6, 4,
-		//Left
-		5, 1, 0, 0 , 4, 5,
-		//Back
-		4, 6, 5, 5, 6, 7
-	};
-
-	bufferDesc = {};
-	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.ByteWidth = sizeof(WORD) * NUM_INDEX;
-	bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	bufferDesc.CPUAccessFlags = 0;
-
-	initData = {};
-	initData.pSysMem = indices;
-
-	hr = d3dDevice->CreateBuffer(&bufferDesc, &initData, indexBuffer.GetAddressOf());
-	if (FAILED(hr)) {
-		SAFE_RELEASE(indexBuffer);
-		return hr;
-	}
-
-	bufferDesc = {};
-	bufferDesc.ByteWidth = sizeof(ObjectBuffer);
-	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	bufferDesc.CPUAccessFlags = 0;
-	hr = d3dDevice->CreateBuffer(&bufferDesc, nullptr, constantBuffer.GetAddressOf());
-	if (FAILED(hr)) {
-		SAFE_RELEASE(constantBuffer);
-		return hr;
-	}
-
-	objectBuffer.world = DirectX::XMMatrixRotationY(45.0f);
-	objectBuffer.world *= DirectX::XMMatrixTranslation(0, 0, 5);
-	objectBuffer.world = DirectX::XMMatrixTranspose(objectBuffer.world);
-}
-
-void Cube::BindData(ID3D11DeviceContext* d3dContext) {
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-
-	d3dContext->IASetInputLayout(vertexLayout.Get());
-	d3dContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
-	d3dContext->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-}
-
 HRESULT Cube::CreatePipeline(ID3D11Device* d3dDevice) {
 	HRESULT hr = HRESULT();
 
@@ -146,11 +57,98 @@ HRESULT Cube::CreatePipeline(ID3D11Device* d3dDevice) {
 	}
 }
 
-void Cube::Update(float deltaTime) {
-	
+HRESULT Cube::CreateData(ID3D11Device* d3dDevice) {
+	HRESULT hr = HRESULT();
+	D3D11_BUFFER_DESC bufferDesc = D3D11_BUFFER_DESC();
+	D3D11_SUBRESOURCE_DATA initData = D3D11_SUBRESOURCE_DATA();
+
+	PolygonVertex vertices[] = {
+		// Front
+		PolygonVertex{DirectX::XMFLOAT4(-1.0f, 1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)},
+		PolygonVertex{DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)},
+		PolygonVertex{DirectX::XMFLOAT4(-1.0f, -1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f)},
+		PolygonVertex{DirectX::XMFLOAT4(1.0f, -1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)},
+
+		// Back
+		PolygonVertex{DirectX::XMFLOAT4(-1.0f, 1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f)},
+		PolygonVertex{DirectX::XMFLOAT4(1.0f, 1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f)},
+		PolygonVertex{DirectX::XMFLOAT4(-1.0f, -1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f)},
+		PolygonVertex{DirectX::XMFLOAT4(1.0f, -1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f)}
+	};
+
+	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	bufferDesc.ByteWidth = sizeof(PolygonVertex) * NUM_VERTEX;
+	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bufferDesc.CPUAccessFlags = 0;
+	bufferDesc.MiscFlags = 0;
+
+	initData.pSysMem = vertices;
+
+	hr = d3dDevice->CreateBuffer(&bufferDesc, &initData, vertexBuffer.GetAddressOf());
+	if (FAILED(hr))
+	{
+		SAFE_RELEASE(vertexBuffer);
+		return hr;
+	}
+
+	indices = {
+		//Front
+		0, 1, 2, 2, 1, 3,
+		//Up
+		1, 5, 3, 3, 5, 7,
+		//Right
+		2, 3, 7, 7, 6, 2,
+		//Down
+		4, 0, 2, 2, 6, 4,
+		//Left
+		5, 1, 0, 0, 4, 5,
+		//Back
+		4, 6, 5, 5, 6, 7
+	};
+
+	bufferDesc = {};
+	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	bufferDesc.ByteWidth = sizeof(UINT) * indices.size();
+	bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	bufferDesc.CPUAccessFlags = 0;
+
+	initData = {};
+	initData.pSysMem = indices.data();
+
+	hr = d3dDevice->CreateBuffer(&bufferDesc, &initData, indexBuffer.GetAddressOf());
+	if (FAILED(hr)) {
+		SAFE_RELEASE(indexBuffer);
+		return hr;
+	}
+
+	bufferDesc = {};
+	bufferDesc.ByteWidth = sizeof(ObjectBuffer);
+	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bufferDesc.CPUAccessFlags = 0;
+	hr = d3dDevice->CreateBuffer(&bufferDesc, nullptr, constantBuffer.GetAddressOf());
+	if (FAILED(hr)) {
+		SAFE_RELEASE(constantBuffer);
+		return hr;
+	}
+
+	objectBuffer.world = DirectX::XMMatrixRotationY(45.0f);
+	objectBuffer.world *= DirectX::XMMatrixTranslation(0, 0, 5);
+	objectBuffer.world = DirectX::XMMatrixTranspose(objectBuffer.world);
 }
 
-void Cube::Render(ID3D11DeviceContext* d3dContext, Camera *camera) {
+void Cube::Update(float deltaTime) {
+
+}
+
+void Cube::Render(ID3D11DeviceContext* d3dContext, Camera* camera) {
+	UINT stride = sizeof(PolygonVertex);
+	UINT offset = 0;
+
+	d3dContext->IASetInputLayout(vertexLayout.Get());
+	d3dContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+	d3dContext->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
 	d3dContext->UpdateSubresource(constantBuffer.Get(), 0, nullptr, &objectBuffer, 0, 0);
 
 	d3dContext->VSSetShader(vertexShader.Get(), nullptr, 0);
@@ -159,5 +157,5 @@ void Cube::Render(ID3D11DeviceContext* d3dContext, Camera *camera) {
 
 	d3dContext->PSSetShader(pixelShader.Get(), nullptr, 0);
 
-	d3dContext->DrawIndexed(NUM_INDEX, 0, 0);
+	d3dContext->DrawIndexed(indices.size(), 0, 0);
 }

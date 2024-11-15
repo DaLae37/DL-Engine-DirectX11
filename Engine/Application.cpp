@@ -67,7 +67,7 @@ HRESULT Application::InitManager() {
 		return E_FAIL;
 	}
 
-	ObjectManagerInstance->Init(device->getD3DDevice().Get(), device->getD3DContext().Get());
+	ObjectManagerInstance->Init(device->getD3DDevice().Get());
 	if (ObjectManagerInstance->getInstance() == nullptr) {
 		std::wstring message = L"Init ObjectManager Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
