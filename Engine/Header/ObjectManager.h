@@ -13,6 +13,8 @@ private:
 
 	bool isInit = false;
 
+	WRL::ComPtr<ID3D11SamplerState> samplerState = nullptr;
+
 	// Get raw pointer from device
 	ID3D11Device* d3dDevice = nullptr;
 

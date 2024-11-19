@@ -18,9 +18,11 @@
 
 //Windows Header
 #include <Windows.h>
-#include <wincodec.h>
 #include <wrl.h>
 #define WRL Microsoft::WRL
+
+// WIC
+#include <wincodec.h>
 
 //DiectX Header
 #include <dxgi.h>

@@ -60,7 +60,7 @@ INT Application::DoMainLoop() {
 }
 
 HRESULT Application::InitManager() {
-	TextureManagerInstance->Init(device->getD2DContext().Get());
+	TextureManagerInstance->Init(device->getD2DContext().Get(), device->getD3DDevice().Get());
 	if (TextureManagerInstance->getInstance() == nullptr) {
 		std::wstring message = L"Init TextureManager Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);

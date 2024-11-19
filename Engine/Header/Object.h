@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Camera.h"
+#include "TextureManager.h"
 
 struct PolygonVertex {
 	DirectX::XMFLOAT4 pos;
@@ -31,6 +32,9 @@ protected :
 	std::vector<UINT> indices;
 
 	ObjectBuffer objectBuffer;
+
+	ID3D11SamplerState* samplerState;
+	std::vector<ID3D11ShaderResourceView*> textures;
 public :
 	explicit Object();
 	virtual ~Object();
@@ -40,6 +44,7 @@ public :
 
 	virtual HRESULT CreatePipeline(ID3D11Device* d3dDevice) = 0;
 	virtual HRESULT CreateData(ID3D11Device* d3dDevice) = 0;
-	
+	void setSamplerState(ID3D11SamplerState* samplerState);
+
 	HRESULT CompileShaderFromFile(const wchar_t* path, const char* entryPoint, const char* shaderModel, ID3DBlob** blob);
 };

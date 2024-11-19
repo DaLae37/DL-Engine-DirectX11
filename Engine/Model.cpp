@@ -68,16 +68,24 @@ HRESULT Model::CreateData(ID3D11Device* d3dDevice) {
 	// Create Vertex Buffer
 	std::vector<ModelVertex> vertices;
 
-	for (int i = 0; i < scene->mMeshes[0]->mNumVertices; i++) {
-		aiVector3D pos = scene->mMeshes[0]->mVertices[i];
-		aiVector3D texCoord = (scene->mMeshes[0]->HasTextureCoords(0)) ? scene->mMeshes[0]->mTextureCoords[0][i] : aiVector3D(0.0f, 0.0f, 0.0f);
-		aiVector3D normal = scene->mMeshes[0]->mNormals[i];
+	for (int i = 0; i < scene->mNumMeshes; i++) {
+		aiMesh* mesh = scene->mMeshes[i];
+		for (int j = 0; j < mesh->mNumVertices; j++) {
+			aiVector3D pos = mesh->mVertices[j];
+			aiVector3D texCoord = (mesh->HasTextureCoords(0)) ? mesh->mTextureCoords[i][j] : aiVector3D(0.0f, 0.0f, 0.0f);
+			aiVector3D normal = (mesh->HasNormals()) ? mesh->mNormals[j] : aiVector3D(0.0f, 0.0f, 0.0f);
 
-		vertices.push_back(ModelVertex{
-			DirectX::XMFLOAT4(pos.x, pos.y, pos.z, 0),
-			DirectX::XMFLOAT2(texCoord.x, texCoord.y),
-			DirectX::XMFLOAT3(normal.x, normal.y, normal.z)
-		});
+			vertices.push_back(ModelVertex{
+				DirectX::XMFLOAT4(pos.x, pos.y, pos.z, 1),
+				DirectX::XMFLOAT2(texCoord.x, texCoord.y),
+				DirectX::XMFLOAT3(normal.x, normal.y, normal.z)
+				});
+
+			if (mesh->HasTextureCoords(0)) {
+				std::filesystem::path texturePath = path.replace_extension(".png");
+				textures.push_back(TextureManagerInstance->LoadD3DTextureFromFile(texturePath).Get());
+			}
+		}
 	}
 
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -155,6 +163,8 @@ void Model::Render(ID3D11DeviceContext* d3dContext, Camera* camera) {
 	d3dContext->VSSetConstantBuffers(1, 1, constantBuffer.GetAddressOf());
 
 	d3dContext->PSSetShader(pixelShader.Get(), nullptr, 0);
+	d3dContext->PSSetShaderResources(0, 1, &textures[0]);
+	d3dContext->PSSetSamplers(0, 1, &samplerState);
 
 	d3dContext->DrawIndexed(indices.size(), 0, 0);
 }

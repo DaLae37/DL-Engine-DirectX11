@@ -1,6 +1,9 @@
 #include "Model.hlsli"
 
+Texture2D modelTexture : register(t0);
+SamplerState modelSampler : register(s0);
+
 float4 main(PS_INPUT input) : SV_TARGET
 {
-	return float4(1.0f, 1.0f, 1.0f, 1.0f);
+    return modelTexture.Sample(modelSampler, input.uv);
 }

@@ -34,3 +34,7 @@ HRESULT Object::CompileShaderFromFile(const wchar_t* path, const char* entryPoin
 		return hr;
 	}
 }
+
+void Object::setSamplerState(ID3D11SamplerState* samplerState) {
+	this->samplerState = samplerState;
+}
