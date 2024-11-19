@@ -1,7 +1,9 @@
 #pragma once
+
 //Project Setting
 #define LOCALE "kor" // std::locale parameter
 #define CURRENT_LANGUAGE = MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL)
+//#define _WIREFRAME
 
 //Program Setting
 #define PROGRAM_NAME TEXT("DL-Engine")

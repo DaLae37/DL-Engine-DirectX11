@@ -38,7 +38,7 @@ void ImageUI::Render(ID2D1DeviceContext* d2dContext) {
 	if (texture != nullptr) {
 		d2dContext->SetTransform(D2D1::Matrix3x2F::Scale(scale.x, scale.y, scalingCenter)
 			* D2D1::Matrix3x2F::Rotation(rotation, rotationCenter)
-			* D2D1::Matrix3x2F::Translation(pos.x, pos.y));
+			* D2D1::Matrix3x2F::Translation(position.x, position.y));
 		d2dContext->DrawBitmap(texture, &rect, color.a, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, nullptr);
 	}
 }

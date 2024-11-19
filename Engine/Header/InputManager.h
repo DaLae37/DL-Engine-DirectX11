@@ -23,5 +23,5 @@ public :
 	void Init(HWND* hWnd);
 	void UpdateKeyState();
 	int GetKeyState(int vk);
-	std::pair<int, int> GetMousePos();
+	POINT GetMousePos();
 };

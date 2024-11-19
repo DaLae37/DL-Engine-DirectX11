@@ -59,7 +59,7 @@ HRESULT Model::CreateData(ID3D11Device* d3dDevice) {
 
 	Assimp::Importer importer;
 
-	const aiScene* scene = importer.ReadFile(static_cast<std::string>(path.string()), aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+	const aiScene* scene = importer.ReadFile(static_cast<std::string>(path.string()), ASSIMP_LOAD_FLAGS);
 	if (!scene || !scene->HasMeshes()) {
 		OutputDebugStringA(importer.GetErrorString());
 		return E_FAIL;
@@ -103,10 +103,13 @@ HRESULT Model::CreateData(ID3D11Device* d3dDevice) {
 	}
 
 	// Create Index Buffer
-	for (int i = 0; i < scene->mMeshes[0]->mNumFaces; i++) {
-		aiFace face = scene->mMeshes[0]->mFaces[i];
-		for (int j = 0; j < face.mNumIndices; j++) {
-			indices.push_back(face.mIndices[j]);
+	for (int i = 0; i < scene->mNumMeshes; i++) {
+		aiMesh* mesh = scene->mMeshes[i];
+		for (int j = 0; j < mesh->mNumFaces; j++) {
+			aiFace face = mesh->mFaces[j];
+			for (int k = 0; k < face.mNumIndices; k++) {
+				indices.push_back(face.mIndices[k]);
+			}
 		}
 	}
 	
@@ -137,15 +140,11 @@ HRESULT Model::CreateData(ID3D11Device* d3dDevice) {
 		return hr;
 	}
 
-	objectBuffer.world = DirectX::XMMatrixRotationY(45.0f);
-	objectBuffer.world *= DirectX::XMMatrixTranslation(0, 0, 50);
-	objectBuffer.world = DirectX::XMMatrixTranspose(objectBuffer.world);
-
 	return S_OK;
 }
 
 void Model::Update(float deltaTime) {
-
+	Object::Update(deltaTime);
 }
 
 void Model::Render(ID3D11DeviceContext* d3dContext, Camera* camera) {

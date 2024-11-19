@@ -6,7 +6,7 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 
-#define ASSIMP_LOAD_FLAGS (aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded)
+#define ASSIMP_LOAD_FLAGS (aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GenSmoothNormals  | aiProcess_FlipUVs | aiProcess_ConvertToLeftHanded)
 
 class Model : public Object
 {

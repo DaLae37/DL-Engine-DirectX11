@@ -10,7 +10,7 @@ public :
 	MainScene();
 	~MainScene();
 
-	void Update(float dTime);
+	void Update(float deltaTime);
 
 	ImageUI *ui;
 	Cube* cube;

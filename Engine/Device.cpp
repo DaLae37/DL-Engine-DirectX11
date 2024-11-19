@@ -164,6 +164,23 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
     // Setting Primitive Type
     d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+#ifdef _WIREFRAME
+    // Setting Rasterizer
+    D3D11_RASTERIZER_DESC rasterDesc = {};
+    rasterDesc.FillMode = D3D11_FILL_WIREFRAME;
+    rasterDesc.CullMode = D3D11_CULL_NONE;
+    rasterDesc.FrontCounterClockwise = false;
+
+    // Create Rasterizer
+    d3dDevice->CreateRasterizerState(&rasterDesc, rasterState.GetAddressOf());
+    if (FAILED(hr)) {
+        return hr;
+    }
+
+    // Set Rasterizer
+    d3dContext->RSSetState(rasterState.Get());
+#endif // _WIREFRAME
+
     return S_OK;
 }
 
@@ -171,7 +188,10 @@ HRESULT Device::InitD2DDevice(HWND hWnd) {
     HRESULT hr = HRESULT();
 
     // Create D2D Factory
-    const D2D1_FACTORY_OPTIONS opts = { D2D1_DEBUG_LEVEL_INFORMATION };
+    D2D1_FACTORY_OPTIONS opts = { };
+#ifdef _DEBUG
+    opts.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
+#endif
     hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, __uuidof(ID2D1Factory1), &opts, reinterpret_cast<void**>(d2dFactory.GetAddressOf()));
     if (FAILED(hr)) {
         return hr;

@@ -4,8 +4,7 @@
 class Cube : public Object
 {
 private :
-	const int NUM_VERTEX = 8;
-	const int NUM_INDEX = 36;
+
 public :
 	Cube();
 	~Cube();

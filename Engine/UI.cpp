@@ -15,13 +15,13 @@ UI::UI() {
 	rotationCenter = D2D_POINT_2F{ 0, 0 };
 	rotation = 0;
 
-	pos = D2D_POINT_2F{ 0, 0 };
+	position = D2D_POINT_2F{ 0, 0 };
 }
 
 UI::~UI() {
 
 }
 
-void UI::SetPos(D2D_POINT_2F newPos) {
-	this->pos = newPos;
+void UI::SetPosition(D2D_POINT_2F newPosition) {
+	this->position = newPosition;
 }

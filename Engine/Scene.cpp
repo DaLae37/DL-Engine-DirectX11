@@ -12,6 +12,12 @@ Scene::~Scene() {
 
 void Scene::Update(float deltaTime) {
 	mainCamera->Update(deltaTime);
+	for (Object* object : objectList) {
+		object->Update(deltaTime);
+	}
+	for (UI* ui : uiList) {
+		ui->Update(deltaTime);
+	}
 }
 
 void Scene::RenderObject(ID3D11DeviceContext* d3dContext) {

@@ -42,10 +42,10 @@ int InputManager::GetKeyState(int vk) {
 	}
 }
 
-std::pair<int, int> InputManager::GetMousePos() {
+POINT InputManager::GetMousePos() {
 	POINT p;
 	GetCursorPos(&p);
 	ScreenToClient(*hWnd, &p);
-
-	return { p.x, p.y };
+	
+	return p;
 }

@@ -57,7 +57,7 @@ HRESULT Cube::CreateData(ID3D11Device* d3dDevice) {
 	D3D11_BUFFER_DESC bufferDesc = D3D11_BUFFER_DESC();
 	D3D11_SUBRESOURCE_DATA initData = D3D11_SUBRESOURCE_DATA();
 
-	PolygonVertex vertices[] = {
+	std::vector<PolygonVertex> vertices = {
 		// Front
 		PolygonVertex{DirectX::XMFLOAT4(-1.0f, 1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)},
 		PolygonVertex{DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)},
@@ -72,12 +72,12 @@ HRESULT Cube::CreateData(ID3D11Device* d3dDevice) {
 	};
 
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.ByteWidth = sizeof(PolygonVertex) * NUM_VERTEX;
+	bufferDesc.ByteWidth = sizeof(PolygonVertex) * vertices.size();
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
 
-	initData.pSysMem = vertices;
+	initData.pSysMem = vertices.data();
 
 	hr = d3dDevice->CreateBuffer(&bufferDesc, &initData, vertexBuffer.GetAddressOf());
 	if (FAILED(hr)) {
@@ -125,14 +125,10 @@ HRESULT Cube::CreateData(ID3D11Device* d3dDevice) {
 		SAFE_RELEASE(constantBuffer);
 		return hr;
 	}
-
-	objectBuffer.world = DirectX::XMMatrixRotationY(45.0f);
-	objectBuffer.world *= DirectX::XMMatrixTranslation(0, 0, 5);
-	objectBuffer.world = DirectX::XMMatrixTranspose(objectBuffer.world);
 }
 
 void Cube::Update(float deltaTime) {
-
+	Object::Update(deltaTime);
 }
 
 void Cube::Render(ID3D11DeviceContext* d3dContext, Camera* camera) {
