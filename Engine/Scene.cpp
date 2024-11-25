@@ -4,6 +4,9 @@
 Scene::Scene() {
 	mainCamera = std::make_unique<Camera>();
 	ObjectManagerInstance->CreateCamera(mainCamera.get());
+
+	mainLight = std::make_unique<Light>();
+	ObjectManagerInstance->CreateLight(mainLight.get());
 }
 
 Scene::~Scene() {

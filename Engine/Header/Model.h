@@ -12,9 +12,10 @@ class Model : public Object
 {
 private:
 	std::filesystem::path path;
-	
-public :
-	Model(const std::filesystem::path &path);
+	std::filesystem::path texturePath;
+public:
+	Model(const std::filesystem::path& path);
+	Model(const std::filesystem::path& path, const std::filesystem::path& texturePath);
 	~Model();
 
 	void Update(float deltaTime);

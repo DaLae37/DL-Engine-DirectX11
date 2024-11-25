@@ -27,4 +27,5 @@ public:
 
 	void CreateObject(Object* object);
 	void CreateCamera(Camera* camera);
+	void CreateLight(Light* light);
 };

@@ -53,3 +53,7 @@ void ObjectManager::CreateObject(Object* object) {
 void ObjectManager::CreateCamera(Camera* camera) {
 	camera->CreateConstantBuffer(d3dDevice);
 }
+
+void ObjectManager::CreateLight(Light* light) {
+
+}

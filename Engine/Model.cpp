@@ -1,8 +1,14 @@
 #include "pch.h"
 #include "Model.h"
 
-Model::Model(const std::filesystem::path &path) {
+Model::Model(const std::filesystem::path& path) {
 	this->path = path;
+	this->texturePath = L"Resources/Default/texture.png";
+}
+
+Model::Model(const std::filesystem::path &path, const std::filesystem::path& texturePath) {
+	this->path = path;
+	this->texturePath = texturePath;
 }
 
 Model::~Model() {
@@ -71,25 +77,20 @@ HRESULT Model::CreateData(ID3D11Device* d3dDevice) {
 	for (int i = 0; i < scene->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[i];
 		for (int j = 0; j < mesh->mNumVertices; j++) {
-			aiVector3D pos = mesh->mVertices[j];
-			aiVector3D texCoord = (mesh->HasTextureCoords(0)) ? mesh->mTextureCoords[i][j] : aiVector3D(0.0f, 0.0f, 0.0f);
+			aiVector3D position = mesh->mVertices[j];
+			aiVector3D uv = (mesh->HasTextureCoords(0)) ? mesh->mTextureCoords[0][j] : aiVector3D(0.0f, 0.0f, 0.0f);
 			aiVector3D normal = (mesh->HasNormals()) ? mesh->mNormals[j] : aiVector3D(0.0f, 0.0f, 0.0f);
 
 			vertices.push_back(ModelVertex{
-				DirectX::XMFLOAT4(pos.x, pos.y, pos.z, 1),
-				DirectX::XMFLOAT2(texCoord.x, texCoord.y),
+				DirectX::XMFLOAT4(position.x, position.y, position.z, 1),
+				DirectX::XMFLOAT2(uv.x, uv.y),
 				DirectX::XMFLOAT3(normal.x, normal.y, normal.z)
 				});
-
-			if (mesh->HasTextureCoords(0)) {
-				std::filesystem::path texturePath = path.replace_extension(".png");
-				textures.push_back(TextureManagerInstance->LoadD3DTextureFromFile(texturePath).Get());
-			}
 		}
 	}
 
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.ByteWidth = sizeof(PolygonVertex) * vertices.size();
+	bufferDesc.ByteWidth = sizeof(ModelVertex) * vertices.size();
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
@@ -115,7 +116,7 @@ HRESULT Model::CreateData(ID3D11Device* d3dDevice) {
 	
 	bufferDesc = {};
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.ByteWidth = sizeof(WORD) * indices.size();
+	bufferDesc.ByteWidth = sizeof(UINT) * indices.size();
 	bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bufferDesc.CPUAccessFlags = 0;
 
@@ -128,6 +129,7 @@ HRESULT Model::CreateData(ID3D11Device* d3dDevice) {
 		return hr;
 	}
 
+	// Create Constant Buffer
 	bufferDesc = {};
 	bufferDesc.ByteWidth = sizeof(ObjectBuffer);
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -138,6 +140,11 @@ HRESULT Model::CreateData(ID3D11Device* d3dDevice) {
 	if (FAILED(hr)) {
 		SAFE_RELEASE(constantBuffer);
 		return hr;
+	}
+
+	// Createa Texture
+	if (texturePath != "") {
+		textures.push_back(TextureManagerInstance->LoadD3DTextureFromFile(texturePath).Get());
 	}
 
 	return S_OK;

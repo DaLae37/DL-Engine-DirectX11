@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Camera.h"
+#include "Light.h"
 
 #include "ObjectManager.h"
 #include "Object.h"
@@ -13,6 +14,7 @@ private :
 	std::vector<UI*> uiList;
 protected :
 	std::unique_ptr<Camera> mainCamera;
+	std::unique_ptr<Light> mainLight;
 public:
 	Scene();
 	virtual ~Scene();

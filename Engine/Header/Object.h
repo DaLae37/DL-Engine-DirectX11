@@ -1,14 +1,16 @@
 #pragma once
 #include "pch.h"
 #include "Camera.h"
+#include "Light.h"
+
 #include "TextureManager.h"
 
 struct Vertex {
-	DirectX::XMFLOAT4 color;
+	DirectX::XMFLOAT4 position;
 };
 
 struct PolygonVertex : Vertex{
-	DirectX::XMFLOAT4 position;
+	DirectX::XMFLOAT4 color;
 };
 
 struct ModelVertex : Vertex
