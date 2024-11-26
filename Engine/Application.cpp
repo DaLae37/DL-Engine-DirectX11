@@ -49,6 +49,7 @@ INT Application::DoMainLoop() {
 		}
 		else {
 			window->WindowLoop();
+			InputManagerInstance->UpdateKeyState();
 			SceneManagerInstance->Update(getDeltaTime());
 
 			device->RenderStart();

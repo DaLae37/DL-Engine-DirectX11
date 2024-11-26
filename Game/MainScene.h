@@ -4,6 +4,9 @@
 #include "Cube.h"
 #include "ImageUI.h"
 #include "Model.h"
+
+#include "InputManager.h"
+
 class MainScene : public Scene
 {
 public :

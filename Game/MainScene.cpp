@@ -10,7 +10,7 @@ MainScene::MainScene() {
 	AddObject(cube);
 	cube->SetRotation({ 0,1,0 });
 
-	model = new Model(L"Resources/Models/tree.obj");
+	model = new Model(L"Resources/Models/tree.obj", "Resources/Models/tree.png");
 	ObjectManagerInstance->CreateObject(model);
 	AddObject(model);
 	model->SetPosition({ 0,-10,50 });
@@ -26,4 +26,11 @@ MainScene::~MainScene() {
 void MainScene::Update(float deltaTime){
 	Scene::Update(deltaTime);
 	model->Rotate({ 0,1 * deltaTime,0 });
+
+	if (InputManagerInstance->GetKeyState(VK_LBUTTON) == KEY_ON) {
+		model->Translate({ -100 * deltaTime, 0, 0 });
+	}
+	if (InputManagerInstance->GetKeyState(VK_RIGHT) == KEY_ON) {
+		model->Translate({ 100 * deltaTime, 0, 0 });
+	}
 }

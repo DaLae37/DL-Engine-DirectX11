@@ -21,7 +21,7 @@ void InputManager::Init(HWND* hWnd) {
 }
 
 void InputManager::UpdateKeyState() {
-	for (int i = 0; i < 256; i++) {
+	for (int i = 0; i < NUM_KEY; i++) {
 		beforeKey[i] = currentKey[i];
 		currentKey[i] = GetAsyncKeyState(i) & 0x8000;
 	}

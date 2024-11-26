@@ -6,13 +6,15 @@
 class InputManager
 {
 private :
+	const int NUM_KEY = 256;
+
 	InputManager();
 	InputManager(const InputManager&) = delete;
 	InputManager& operator=(const InputManager&) = delete;
 
 	bool isInit = false;
-	std::vector<bool> beforeKey;
-	std::vector<bool> currentKey;
+	std::vector<bool> beforeKey = std::vector<bool>(NUM_KEY, false);
+	std::vector<bool> currentKey = std::vector<bool>(NUM_KEY, false);
 
 	HWND *hWnd;
 public :
