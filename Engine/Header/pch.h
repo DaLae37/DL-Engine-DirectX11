@@ -8,6 +8,8 @@
 //Program Setting
 #define PROGRAM_NAME TEXT("DL-Engine")
 #define CONSOLE_NAME TEXT("Console")
+#define DEFAULT_WIDTH 1920
+#define DEFAULT_HEIGHT 1080
 
 //Static Library
 #pragma comment (lib,"dxgi.lib")

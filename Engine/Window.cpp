@@ -54,7 +54,7 @@ HRESULT Window::InitWindow() {
 HRESULT Window::FloatWindow() {
 	this->hWnd = CreateWindowEx(WS_EX_APPWINDOW, PROGRAM_NAME, PROGRAM_NAME,
 		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-		1920, 1080,
+		DEFAULT_WIDTH, DEFAULT_HEIGHT,
 		nullptr, nullptr, hInstance, nullptr);
 
 	ShowWindow(this->hWnd, nCmdShow);

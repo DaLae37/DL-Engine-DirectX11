@@ -23,14 +23,27 @@ MainScene::~MainScene() {
 	SAFE_DELETE(model);
 }
 
-void MainScene::Update(float deltaTime){
+void MainScene::Update(float deltaTime) {
 	Scene::Update(deltaTime);
 	model->Rotate({ 0,1 * deltaTime,0 });
 
 	if (InputManagerInstance->GetKeyState(VK_LBUTTON) == KEY_ON) {
 		model->Translate({ -100 * deltaTime, 0, 0 });
 	}
-	if (InputManagerInstance->GetKeyState(VK_RIGHT) == KEY_ON) {
+	if (InputManagerInstance->GetKeyState(VK_RBUTTON) == KEY_ON) {
 		model->Translate({ 100 * deltaTime, 0, 0 });
+	}
+
+	if (InputManagerInstance->GetKeyState(VK_UP) == KEY_ON) {
+		mainCamera->Translate({ 0, 50 * deltaTime, 0 });
+	}
+	if (InputManagerInstance->GetKeyState(VK_DOWN) == KEY_ON) {
+		mainCamera->Translate({ 0, -50 * deltaTime, 0 });
+	}
+	if (InputManagerInstance->GetKeyState(VK_LEFT) == KEY_ON) {
+		mainCamera->Translate({ -50 * deltaTime, 0, 0 });
+	}
+	if (InputManagerInstance->GetKeyState(VK_RIGHT) == KEY_ON) {
+		mainCamera->Translate({ 50 * deltaTime,0, 0 });
 	}
 }

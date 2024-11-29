@@ -2,9 +2,7 @@
 #include "Object.h"
 
 Object::Object() {
-	scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
-	rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+
 }
 
 Object::~Object() {

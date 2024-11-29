@@ -9,12 +9,11 @@ struct Vertex {
 	DirectX::XMFLOAT4 position;
 };
 
-struct PolygonVertex : Vertex{
+struct PolygonVertex : Vertex {
 	DirectX::XMFLOAT4 color;
 };
 
-struct ModelVertex : Vertex
-{
+struct ModelVertex : Vertex {
 	DirectX::XMFLOAT2 uv;
 	DirectX::XMFLOAT3 normal;
 };
@@ -24,9 +23,6 @@ struct ObjectBuffer {
 };
 
 class Object {
-private :
-	bool isChangedTransform = false;
-
 protected :
 	WRL::ComPtr<ID3D11VertexShader> vertexShader = nullptr;
 	WRL::ComPtr<ID3D11PixelShader> pixelShader = nullptr;
@@ -56,12 +52,15 @@ public :
 	HRESULT CompileShaderFromFile(const wchar_t* path, const char* entryPoint, const char* shaderModel, ID3DBlob** blob);
 
 //Transform
+private:
+	bool isChangedTransform = true;
+
 protected :
 	ObjectBuffer objectBuffer;
 
-	DirectX::XMFLOAT3 scale;
-	DirectX::XMFLOAT3 rotation;
-	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT3 scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
+	DirectX::XMFLOAT3 rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 public :	
 	void SetScale(DirectX::XMFLOAT3 newScale);
 	void Scaling(DirectX::XMFLOAT3 scaleOffset);
@@ -71,5 +70,4 @@ public :
 
 	void SetPosition(DirectX::XMFLOAT3 newPosition);
 	void Translate(DirectX::XMFLOAT3 positionOffset);
-
 };
