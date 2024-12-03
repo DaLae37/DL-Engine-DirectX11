@@ -4,8 +4,7 @@
 
 #define SceneManagerInstance SceneManager::getInstance()
 
-class SceneManager
-{
+class SceneManager {
 private :
 	SceneManager();
 	SceneManager(const SceneManager&) = delete;

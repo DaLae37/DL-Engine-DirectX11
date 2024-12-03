@@ -2,8 +2,7 @@
 #include "UI.h"
 #include "TextureManager.h"
 
-class ImageUI : public UI
-{
+class ImageUI : public UI {
 private :
 	D2D_COLOR_F color;
 	int width;

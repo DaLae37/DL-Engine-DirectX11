@@ -2,7 +2,9 @@
 #include "Object.h"
 
 Object::Object() {
-
+	scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
+	rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 }
 
 Object::~Object() {
@@ -26,6 +28,11 @@ HRESULT Object::CompileShaderFromFile(const wchar_t* path, const char* entryPoin
 	HRESULT hr = HRESULT();
 
 	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+
+#ifdef _DEBUG
+	dwShaderFlags |= D3DCOMPILE_DEBUG;
+	dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
+#endif
 
 	WRL::ComPtr<ID3DBlob> errorBlob = nullptr;
 	hr = D3DCompileFromFile(

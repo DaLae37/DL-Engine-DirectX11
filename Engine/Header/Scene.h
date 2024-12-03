@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Camera.h"
-#include "Light.h"
+#include "DirectionalLight.h"
 
 #include "ObjectManager.h"
 #include "Object.h"
@@ -15,7 +15,7 @@ private :
 
 protected :
 	std::unique_ptr<Camera> mainCamera;
-	std::unique_ptr<Light> mainLight;
+	std::unique_ptr<DirectionalLight> mainLight;
 
 public:
 	Scene();

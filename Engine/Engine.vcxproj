@@ -169,6 +169,7 @@ xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$(
     <ClInclude Include="Header\Camera.h" />
     <ClInclude Include="Header\Cube.h" />
     <ClInclude Include="Header\Device.h" />
+    <ClInclude Include="Header\DirectionalLight.h" />
     <ClInclude Include="Header\ImageUI.h" />
     <ClInclude Include="Header\InputManager.h" />
     <ClInclude Include="Header\Light.h" />
@@ -189,8 +190,10 @@ xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$(
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Device.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="ImageUI.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />

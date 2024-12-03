@@ -5,12 +5,15 @@ cbuffer CameraBuffer : register(b0)
     float4 cameraPosition;
 };
 
-cbuffer ObjectBuffer : register(b1)
+cbuffer LightBuffer : register(b1)
+{ 
+    float4 diffuseColor;
+    float4 specularColor;
+    float4 ambientColor;
+    float4 lightDirection;
+};
+
+cbuffer ObjectBuffer : register(b2)
 {
     matrix world;
 };
-
-cbuffer LightBuffer : register(b2)
-{
-    float4 lightPosition;
-}

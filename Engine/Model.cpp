@@ -89,8 +89,8 @@ HRESULT Model::CreateData(ID3D11Device* d3dDevice) {
 		}
 	}
 
-	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufferDesc.ByteWidth = sizeof(ModelVertex) * vertices.size();
+	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
@@ -115,8 +115,8 @@ HRESULT Model::CreateData(ID3D11Device* d3dDevice) {
 	}
 	
 	bufferDesc = {};
-	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufferDesc.ByteWidth = sizeof(UINT) * indices.size();
+	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bufferDesc.CPUAccessFlags = 0;
 
@@ -154,7 +154,7 @@ void Model::Update(float deltaTime) {
 	Object::Update(deltaTime);
 }
 
-void Model::Render(ID3D11DeviceContext* d3dContext, Camera* camera) {
+void Model::Render(ID3D11DeviceContext* d3dContext, Camera* camera, Light* light) {
 	UINT stride = sizeof(ModelVertex);
 	UINT offset = 0;
 
@@ -166,9 +166,10 @@ void Model::Render(ID3D11DeviceContext* d3dContext, Camera* camera) {
 
 	d3dContext->VSSetShader(vertexShader.Get(), nullptr, 0);
 	d3dContext->VSSetConstantBuffers(0, 1, camera->getConstantBuffer().GetAddressOf());
-	d3dContext->VSSetConstantBuffers(1, 1, constantBuffer.GetAddressOf());
+	d3dContext->VSSetConstantBuffers(2, 1, constantBuffer.GetAddressOf());
 
 	d3dContext->PSSetShader(pixelShader.Get(), nullptr, 0);
+	d3dContext->PSSetConstantBuffers(1, 1, light->getConstantBuffer().GetAddressOf());
 	d3dContext->PSSetShaderResources(0, 1, &textures[0]);
 	d3dContext->PSSetSamplers(0, 1, &samplerState);
 

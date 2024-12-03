@@ -2,7 +2,12 @@
 #include "Camera.h"
 
 Camera::Camera() {
+    position = DirectX::XMFLOAT3(0.0f, 5.0f, -10.0f);
+    rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 
+    yaw = 0;
+    pitch = 0;
+    roll = 0;
 }
 
 Camera::~Camera() {
@@ -13,8 +18,8 @@ HRESULT Camera::CreateConstantBuffer(ID3D11Device* d3dDevice) {
     HRESULT hr = HRESULT();
     D3D11_BUFFER_DESC bufferDesc = D3D11_BUFFER_DESC();
 
-    bufferDesc.Usage = D3D11_USAGE_DEFAULT;
     bufferDesc.ByteWidth = sizeof(CameraBuffer);
+    bufferDesc.Usage = D3D11_USAGE_DEFAULT;
     bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     bufferDesc.CPUAccessFlags = 0;
     hr = d3dDevice->CreateBuffer(&bufferDesc, nullptr, constantBuffer.GetAddressOf());
@@ -49,6 +54,7 @@ void Camera::Update(float deltaTime) {
             100.0f
         );
         cameraBuffer.projectionMatrix = DirectX::XMMatrixTranspose(cameraBuffer.projectionMatrix);
+        cameraBuffer.cameraPosition = DirectX::XMFLOAT4{ position.x, position.y, position.z, 1.0f };
 
         isChangedTransform = false;
     }
@@ -60,10 +66,6 @@ void Camera::Render(ID3D11DeviceContext* d3dContext) {
 
 WRL::ComPtr<ID3D11Buffer> Camera::getConstantBuffer() {
     return this->constantBuffer;
-}
-
-const CameraBuffer* Camera::getCameraBuffer() {
-    return &this->cameraBuffer;
 }
 
 void Camera::SetRotation(DirectX::XMFLOAT3 newRotation) {

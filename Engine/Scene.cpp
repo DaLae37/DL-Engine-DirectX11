@@ -5,7 +5,7 @@ Scene::Scene() {
 	mainCamera = std::make_unique<Camera>();
 	ObjectManagerInstance->CreateCamera(mainCamera.get());
 
-	mainLight = std::make_unique<Light>();
+	mainLight = std::make_unique<DirectionalLight>();
 	ObjectManagerInstance->CreateLight(mainLight.get());
 }
 
@@ -15,6 +15,7 @@ Scene::~Scene() {
 
 void Scene::Update(float deltaTime) {
 	mainCamera->Update(deltaTime);
+	mainLight->Update(deltaTime);
 	for (Object* object : objectList) {
 		object->Update(deltaTime);
 	}
@@ -25,8 +26,9 @@ void Scene::Update(float deltaTime) {
 
 void Scene::RenderObject(ID3D11DeviceContext* d3dContext) {
 	mainCamera->Render(d3dContext);
+	mainLight->Render(d3dContext);
 	for (Object* object : objectList) {
-		object->Render(d3dContext, mainCamera.get());
+		object->Render(d3dContext, mainCamera.get(), mainLight.get());
 	}
 }
 

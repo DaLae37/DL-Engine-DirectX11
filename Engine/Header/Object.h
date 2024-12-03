@@ -16,6 +16,7 @@ struct PolygonVertex : Vertex {
 struct ModelVertex : Vertex {
 	DirectX::XMFLOAT2 uv;
 	DirectX::XMFLOAT3 normal;
+	float padding[3];
 };
 
 struct ObjectBuffer {
@@ -43,7 +44,7 @@ public :
 	virtual ~Object();
 
 	virtual void Update(float deltaTime);
-	virtual void Render(ID3D11DeviceContext* d3dContext, Camera* camera) = 0;
+	virtual void Render(ID3D11DeviceContext* d3dContext, Camera* camera, Light *light) = 0;
 
 	virtual HRESULT CreatePipeline(ID3D11Device* d3dDevice) = 0;
 	virtual HRESULT CreateData(ID3D11Device* d3dDevice) = 0;
@@ -58,9 +59,10 @@ private:
 protected :
 	ObjectBuffer objectBuffer;
 
-	DirectX::XMFLOAT3 scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
-	DirectX::XMFLOAT3 rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	DirectX::XMFLOAT3 scale;
+	DirectX::XMFLOAT3 rotation;
+	DirectX::XMFLOAT3 position;
+
 public :	
 	void SetScale(DirectX::XMFLOAT3 newScale);
 	void Scaling(DirectX::XMFLOAT3 scaleOffset);

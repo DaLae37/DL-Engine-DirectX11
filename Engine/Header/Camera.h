@@ -1,41 +1,39 @@
 #pragma once
 #include "pch.h"
 
-struct CameraBuffer
-{
+struct CameraBuffer {
 	DirectX::XMMATRIX viewMatrix = DirectX::XMMatrixIdentity();
 	DirectX::XMMATRIX projectionMatrix = DirectX::XMMatrixIdentity();
+	DirectX::XMFLOAT4 cameraPosition;
 };
 
-class Camera
-{
+class Camera {
 private :
 	WRL::ComPtr<ID3D11Buffer> constantBuffer;
 	CameraBuffer cameraBuffer;
 
 public :
-	Camera();
-	~Camera();
-
-	virtual void Update(float deltaTime);
-	virtual void Render(ID3D11DeviceContext* d3dDevice);
+	explicit Camera();
+	virtual ~Camera();
 
 	virtual HRESULT CreateConstantBuffer(ID3D11Device* d3dDevice);
 
+	virtual void Update(float deltaTime);
+	virtual void Render(ID3D11DeviceContext* d3dContext);
+
 	WRL::ComPtr<ID3D11Buffer> getConstantBuffer();
-	const CameraBuffer* getCameraBuffer();
 
 //Transform
 private:
 	bool isChangedTransform = true;
 
 protected:
-	DirectX::XMFLOAT3 position = DirectX::XMFLOAT3(0.0f, 5.0f, -10.0f);
-	DirectX::XMFLOAT3 rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT3 rotation;
 
-	float yaw = 0;
-	float pitch = 0;
-	float roll = 0;
+	float yaw;
+	float pitch;
+	float roll;
 
 public:
 	void SetRotation(DirectX::XMFLOAT3 newRotation);
