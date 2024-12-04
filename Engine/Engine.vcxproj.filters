@@ -181,28 +181,28 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\Model.hlsli">
+    <FxCompile Include="Shaders\Cube_PS.hlsl">
       <Filter>리소스 파일</Filter>
-    </None>
-    <None Include="Shader\Polygon.hlsli">
+    </FxCompile>
+    <FxCompile Include="Shaders\Cube_VS.hlsl">
       <Filter>리소스 파일</Filter>
-    </None>
-    <None Include="Shader\Object.hlsli">
+    </FxCompile>
+    <FxCompile Include="Shaders\Model_PS.hlsl">
       <Filter>리소스 파일</Filter>
-    </None>
+    </FxCompile>
+    <FxCompile Include="Shaders\Model_VS.hlsl">
+      <Filter>리소스 파일</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\Cube_PS.hlsl">
+    <None Include="Shaders\Model.hlsli">
       <Filter>리소스 파일</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\Cube_VS.hlsl">
+    </None>
+    <None Include="Shaders\Object.hlsli">
       <Filter>리소스 파일</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\Model_PS.hlsl">
+    </None>
+    <None Include="Shaders\Polygon.hlsli">
       <Filter>리소스 파일</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\Model_VS.hlsl">
-      <Filter>리소스 파일</Filter>
-    </FxCompile>
+    </None>
   </ItemGroup>
 </Project>

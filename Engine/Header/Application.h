@@ -8,6 +8,7 @@
 #include "ObjectManager.h"
 #include "TextureManager.h"
 #include "InputManager.h"
+#include "ShaderManager.h"
 
 class Application {
 private:

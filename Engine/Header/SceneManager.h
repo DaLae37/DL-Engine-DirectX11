@@ -6,7 +6,7 @@
 
 class SceneManager {
 private :
-	SceneManager();
+	SceneManager() = default;
 	SceneManager(const SceneManager&) = delete;
 	SceneManager& operator=(const SceneManager&) = delete;
 

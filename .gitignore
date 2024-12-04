@@ -397,6 +397,10 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+## Temporary Shaders
+/Engine/CompiledShaders/*
+/Game/Shaders/*
+
 ## Include Plugin Files
 !/Plugin/**
 !/Game/Resources/**

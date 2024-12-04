@@ -4,6 +4,7 @@
 #include "Light.h"
 
 #include "TextureManager.h"
+#include "ShaderManager.h"
 
 struct Vertex {
 	DirectX::XMFLOAT4 position;
@@ -49,8 +50,6 @@ public :
 	virtual HRESULT CreatePipeline(ID3D11Device* d3dDevice) = 0;
 	virtual HRESULT CreateData(ID3D11Device* d3dDevice) = 0;
 	void setSamplerState(ID3D11SamplerState* samplerState);
-
-	HRESULT CompileShaderFromFile(const wchar_t* path, const char* entryPoint, const char* shaderModel, ID3DBlob** blob);
 
 //Transform
 private:

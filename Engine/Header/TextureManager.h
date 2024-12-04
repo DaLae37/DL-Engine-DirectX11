@@ -6,7 +6,7 @@
 class TextureManager
 {
 private:
-	TextureManager();
+	TextureManager() = default;
 	TextureManager(const TextureManager&) = delete;
 	TextureManager& operator=(const TextureManager&) = delete;
 

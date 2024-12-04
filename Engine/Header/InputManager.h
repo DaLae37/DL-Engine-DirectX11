@@ -8,7 +8,7 @@ class InputManager
 private :
 	const int NUM_KEY = 256;
 
-	InputManager();
+	InputManager() = default;
 	InputManager(const InputManager&) = delete;
 	InputManager& operator=(const InputManager&) = delete;
 

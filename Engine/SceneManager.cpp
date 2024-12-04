@@ -1,10 +1,6 @@
 #include "pch.h"
 #include "SceneManager.h"
 
-SceneManager::SceneManager() {
-	isInit = false;
-}
-
 SceneManager::~SceneManager() {
 	SAFE_DELETE(currentScene);
 }

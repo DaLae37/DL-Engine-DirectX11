@@ -18,14 +18,9 @@ Model::~Model() {
 HRESULT Model::CreatePipeline(ID3D11Device* d3dDevice) {
 	HRESULT hr = HRESULT();
 
-	WRL::ComPtr<ID3DBlob> vertexShaderBlob = nullptr;
-	hr = CompileShaderFromFile(L"Shaders/Model_VS.hlsl", "main", "vs_5_0", vertexShaderBlob.GetAddressOf());
-	if (FAILED(hr)) {
-		SAFE_RELEASE(vertexShaderBlob);
-		return hr;
-	}
+	const std::vector<char>* vertexShaderBinary = ShaderManagerInstance->GetCompiledShader(L"Shaders/Model_VS.hlsl", "main", "vs_5_0");
 
-	hr = d3dDevice->CreateVertexShader(vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), nullptr, vertexShader.GetAddressOf());
+	hr = d3dDevice->CreateVertexShader(vertexShaderBinary->data(), vertexShaderBinary->size(), nullptr, vertexShader.GetAddressOf());
 	if (FAILED(hr)) {
 		SAFE_RELEASE(vertexShader);
 		return hr;
@@ -38,20 +33,15 @@ HRESULT Model::CreatePipeline(ID3D11Device* d3dDevice) {
 	};
 	UINT numElements = ARRAYSIZE(layouts);
 
-	hr = d3dDevice->CreateInputLayout(layouts, numElements, vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), vertexLayout.GetAddressOf());
+	hr = d3dDevice->CreateInputLayout(layouts, numElements, vertexShaderBinary->data(), vertexShaderBinary->size(), vertexLayout.GetAddressOf());
 	if (FAILED(hr)) {
 		SAFE_RELEASE(vertexLayout);
 		return hr;
 	}
 
-	WRL::ComPtr<ID3DBlob> pixelShaderBlob = nullptr;
-	hr = CompileShaderFromFile(L"Shaders/Model_PS.hlsl", "main", "ps_5_0", pixelShaderBlob.GetAddressOf());
-	if (FAILED(hr)) {
-		SAFE_RELEASE(pixelShaderBlob);
-		return hr;
-	}
+	const std::vector<char>* pixelShaderBinary = ShaderManagerInstance->GetCompiledShader(L"Shaders/Model_PS.hlsl", "main", "ps_5_0");
 
-	hr = d3dDevice->CreatePixelShader(pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize(), nullptr, pixelShader.GetAddressOf());
+	hr = d3dDevice->CreatePixelShader(pixelShaderBinary->data(), pixelShaderBinary->size(), nullptr, pixelShader.GetAddressOf());
 	if (FAILED(hr)) {
 		SAFE_RELEASE(pixelShader);
 		return hr;

@@ -84,7 +84,14 @@ HRESULT Application::InitManager() {
 
 	InputManagerInstance->Init(window->getWindowHandle());
 	if (InputManagerInstance->getInstance() == nullptr) {
-		std::wstring message = L"Init SceneManager Failed\n" + std::to_wstring(GetLastError());
+		std::wstring message = L"Init InputManager Failed\n" + std::to_wstring(GetLastError());
+		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
+		return E_FAIL;
+	}
+
+	ShaderManagerInstance->Init();
+	if (ShaderManagerInstance->getInstance() == nullptr) {
+		std::wstring message = L"Init ShaderManager Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
 		return E_FAIL;
 	}

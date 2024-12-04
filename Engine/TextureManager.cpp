@@ -1,10 +1,6 @@
 #include "pch.h"
 #include "TextureManager.h"
 
-TextureManager::TextureManager() {
-
-}
-
 TextureManager::~TextureManager() {
 	d2dTextureMap.clear();
 	d3dTextureMap.clear();

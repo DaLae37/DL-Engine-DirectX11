@@ -7,7 +7,7 @@
 class ObjectManager
 {
 private:
-	ObjectManager();
+	ObjectManager() = default;
 	ObjectManager(const ObjectManager&) = delete;
 	ObjectManager& operator=(const ObjectManager&) = delete;
 

@@ -32,8 +32,6 @@
 #include <dxgi.h>
 #include <DirectXMath.h>
 #include <DirectXColors.h>
-#include <dwrite.h>
-#include <xaudio2.h>
 
 //DirectX11
 #include <d3d11_4.h>
@@ -43,11 +41,10 @@
 #include <d2d1_3.h>
 #include <d2d1_3helper.h>
 
-//Debug Header
+//STD Header
 #include <iostream>
 #include <string>
-#include <io.h>
-#include <fcntl.h>
+#include <algorithm>
 
 //Smart Pointer
 #include <memory>
@@ -59,6 +56,7 @@
 
 //File path Management
 #include <filesystem>
+#include <fstream>
 
 //STL
 #include <map>
@@ -66,7 +64,6 @@
 #include <vector>
 #include <list>
 #include <set>
-#include <algorithm>
 
 //Macro Define
 #define KEY_NONE 0
