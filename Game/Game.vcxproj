@@ -120,11 +120,11 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Engine\Lib\Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy /y /e "$(ProjectDir)Resources" "$(SolutionDir)Build\Release\Resources\"
+xcopy /y /e "$(ProjectDir)Shaders" "$(SolutionDir)Build\Debug\Shaders\"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy /y /e "$(ProjectDir)Resources" "$(SolutionDir)Build\Debug\Resources\"</Command>
+      <Command>xcopy /y /e "$(SolutionDir)Engine\Shader" "$(ProjectDir)Shaders\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,10 +147,12 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Engine\Lib\Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>del "$(SolutionDir)Build\Release\$(ProjectName).pdb"</Command>
+      <Command>xcopy /y /e "$(ProjectDir)Resources" "$(SolutionDir)Build\Release\Resources\"
+xcopy /y /e "$(ProjectDir)Shaders" "$(SolutionDir)Build\Release\Shaders\"
+del "$(SolutionDir)Build\Release\$(ProjectName).pdb"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy /y /e "$(ProjectDir)Resources" "$(SolutionDir)Build\Release\Resources\"</Command>
+      <Command>xcopy /y /e "$(SolutionDir)Engine\Shader" "$(ProjectDir)Shaders\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

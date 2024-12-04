@@ -10,7 +10,7 @@ MainScene::MainScene() {
 	AddObject(cube);
 	cube->SetRotation({ 0,1,0 });
 
-	model = new Model(L"Resources/Models/tree.obj", "Resources/Models/tree.png");
+	model = new Model(L"Resources/3DModels/tree.obj", "Resources/3DModels/tree.png");
 	ObjectManagerInstance->CreateObject(model);
 	AddObject(model);
 	model->SetPosition({ 0,-10,50 });

@@ -32,6 +32,8 @@ HRESULT Object::CompileShaderFromFile(const wchar_t* path, const char* entryPoin
 #ifdef _DEBUG
 	dwShaderFlags |= D3DCOMPILE_DEBUG;
 	dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
+#else
+	dwShaderFlags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
 #endif
 
 	WRL::ComPtr<ID3DBlob> errorBlob = nullptr;

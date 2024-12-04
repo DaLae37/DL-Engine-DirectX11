@@ -31,9 +31,6 @@
     <Filter Include="헤더 파일\Object">
       <UniqueIdentifier>{de682ca0-20b5-4c87-890d-3d5d4d95fb34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Managr">
-      <UniqueIdentifier>{09426448-9527-457a-80cd-fde246bd90da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="헤더 파일\Manager">
       <UniqueIdentifier>{8fadc08e-01c5-4340-ac27-db632607429d}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,9 @@
     </Filter>
     <Filter Include="헤더 파일\Object\3DModel">
       <UniqueIdentifier>{cc53992a-60c5-42ae-90cf-a255ee001569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Manager">
+      <UniqueIdentifier>{09426448-9527-457a-80cd-fde246bd90da}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +114,9 @@
     <ClInclude Include="Header\DirectionalLight.h">
       <Filter>헤더 파일\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Header\ShaderManager.h">
+      <Filter>헤더 파일\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneManager.cpp">
@@ -141,10 +144,10 @@
       <Filter>소스 파일\Scene</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
-      <Filter>소스 파일\Managr</Filter>
+      <Filter>소스 파일\Manager</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
-      <Filter>소스 파일\Managr</Filter>
+      <Filter>소스 파일\Manager</Filter>
     </ClCompile>
     <ClCompile Include="UI.cpp">
       <Filter>소스 파일\UI</Filter>
@@ -172,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>소스 파일\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>소스 파일\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

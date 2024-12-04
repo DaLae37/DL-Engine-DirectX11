@@ -19,7 +19,7 @@ HRESULT Model::CreatePipeline(ID3D11Device* d3dDevice) {
 	HRESULT hr = HRESULT();
 
 	WRL::ComPtr<ID3DBlob> vertexShaderBlob = nullptr;
-	hr = CompileShaderFromFile(L"../Engine/Shader/Model_VS.hlsl", "main", "vs_5_0", vertexShaderBlob.GetAddressOf());
+	hr = CompileShaderFromFile(L"Shaders/Model_VS.hlsl", "main", "vs_5_0", vertexShaderBlob.GetAddressOf());
 	if (FAILED(hr)) {
 		SAFE_RELEASE(vertexShaderBlob);
 		return hr;
@@ -45,7 +45,7 @@ HRESULT Model::CreatePipeline(ID3D11Device* d3dDevice) {
 	}
 
 	WRL::ComPtr<ID3DBlob> pixelShaderBlob = nullptr;
-	hr = CompileShaderFromFile(L"../Engine/Shader/Model_PS.hlsl", "main", "ps_5_0", pixelShaderBlob.GetAddressOf());
+	hr = CompileShaderFromFile(L"Shaders/Model_PS.hlsl", "main", "ps_5_0", pixelShaderBlob.GetAddressOf());
 	if (FAILED(hr)) {
 		SAFE_RELEASE(pixelShaderBlob);
 		return hr;

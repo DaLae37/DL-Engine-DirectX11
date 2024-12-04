@@ -179,6 +179,7 @@
     <ClInclude Include="Header\pch.h" />
     <ClInclude Include="Header\Scene.h" />
     <ClInclude Include="Header\SceneManager.h" />
+    <ClInclude Include="Header\ShaderManager.h" />
     <ClInclude Include="Header\UI.h" />
     <ClInclude Include="Header\TextureManager.h" />
     <ClInclude Include="Header\Window.h" />
@@ -203,6 +204,7 @@
     </ClCompile>
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Window.cpp" />
