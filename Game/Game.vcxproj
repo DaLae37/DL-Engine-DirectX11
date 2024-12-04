@@ -123,6 +123,9 @@
       <Command>
       </Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>xcopy /y /e "$(ProjectDir)Resources" "$(SolutionDir)Build\Debug\Resources\"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -144,9 +147,11 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Engine\Lib\Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>del "$(SolutionDir)Build\Release\$(ProjectName).pdb"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>xcopy /y /e "$(ProjectDir)Resources" "$(SolutionDir)Build\Release\Resources\"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

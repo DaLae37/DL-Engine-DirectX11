@@ -72,9 +72,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>dl_dx11_debug</TargetName>
+    <OutDir>$(ProjectDir)Lib\Debug</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>dl_dx11</TargetName>
+    <OutDir>$(ProjectDir)Lib\Release</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -123,9 +125,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>mkdir "$(ProjectDIr)Lib\Debug\"
-copy "$(TargetDir)" "$(ProjectDIr)Lib\Debug\"
-xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Debug\assimp-vc143-mtd.dll" "$(SolutionDir)\Build\Debug\"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Debug\assimp-vc143-mtd.dll" "$(SolutionDir)Build\Debug\"</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -153,9 +153,7 @@ xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Debug\assimp-vc143-mtd.dll" "$(S
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>mkdir "$(ProjectDIr)Lib\Release\"
-copy "$(TargetDir)" "$(ProjectDIr)Lib\Release\"
-xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$(SolutionDir)\Build\Release\"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)Plugin\Assimp\Binary\Release\assimp-vc143-mt.dll" "$(SolutionDir)Build\Release\"</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
