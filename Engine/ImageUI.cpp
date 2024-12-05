@@ -13,16 +13,16 @@ ImageUI::ImageUI(const std::filesystem::path& path) {
 		width = textureSize.width;
 		height = textureSize.height;
 
-		rotationCenter.x = width / 2.f;
-		rotationCenter.y = height / 2.f;
+		rotationCenter.x = width / 2.0f;
+		rotationCenter.y = height / 2.0f;
 
-		scalingCenter.x = width / 2.f;
-		scalingCenter.y = height / 2.f;
+		scalingCenter.x = 0;
+		scalingCenter.y = 0;
 
-		rect.left = 0;
-		rect.top = 0;
-		rect.right = width;
-		rect.bottom = height;
+		rect.left = position.x;
+		rect.top = position.y;
+		rect.right = position.x + width;
+		rect.bottom = position.y + height;
 	}
 }
 
@@ -31,7 +31,10 @@ ImageUI::~ImageUI() {
 }
 
 void ImageUI::Update(float dTime) {
-
+	rect.left = position.x;
+	rect.top = position.y;
+	rect.right = position.x + width * scale.x;
+	rect.bottom = position.y + height * scale.y;
 }
 
 void ImageUI::Render(ID2D1DeviceContext* d2dContext) {

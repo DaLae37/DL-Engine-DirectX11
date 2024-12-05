@@ -17,5 +17,6 @@ public :
 
 	ImageUI *ui;
 	Cube* cube;
-	Model* model;
+	Model* model1;
+	Model* model2;
 };
