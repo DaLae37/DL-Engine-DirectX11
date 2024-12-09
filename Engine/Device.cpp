@@ -22,7 +22,9 @@ Device::~Device() {
     SAFE_COMPTR_DELETE(d2dRenderTarget);
 }
 
+// TODO : 랜더 타겟 배경화면 색상 지정
 void Device::RenderStart() {
+    // Render Start Order : D3D -> D2D
     d3dContext->ClearRenderTargetView(d3dRenderTargetView.Get(), DirectX::Colors::MidnightBlue);
     d3dContext->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
@@ -30,46 +32,54 @@ void Device::RenderStart() {
 }
 
 void Device::RenderEnd() {
+    // Render End Order : D2D -> D3D
     d2dContext->EndDraw();
 
+    // Swapping BackBuffer
     dxgiSwapChain->Present(1, 0);
 }
 
 HRESULT Device::InitD3D11Device(HWND hWnd) {
     HRESULT hr = HRESULT();
 
+    // Get Windows Rect
     RECT rect = RECT();
     GetClientRect(hWnd, &rect);
     UINT width = static_cast<UINT>(rect.right - rect.left);
     UINT height = static_cast<UINT>(rect.bottom - rect.top);
 
     // Create D3D11 Device
+
+    // Set D3D Flags
     UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #ifdef _DEBUG
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
+    D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_NULL;
     const D3D_DRIVER_TYPE driverTypes[] =
     {
-        D3D_DRIVER_TYPE_HARDWARE,
-        D3D_DRIVER_TYPE_WARP,
-        D3D_DRIVER_TYPE_REFERENCE,
+        D3D_DRIVER_TYPE_HARDWARE, // Order 1 : Hardware Acceleration
+        D3D_DRIVER_TYPE_WARP, // Order 2 : Rapid Software Renderer
+        D3D_DRIVER_TYPE_REFERENCE, // If Failed Order 1 & 2, Using Sofware Simulation
     };
     UINT numDriverTypes = ARRAYSIZE(driverTypes);
 
+    D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_1;
     const D3D_FEATURE_LEVEL featureLevels[] =
     {
-        D3D_FEATURE_LEVEL_11_1,
-        D3D_FEATURE_LEVEL_11_0,
-        D3D_FEATURE_LEVEL_10_1,
-        D3D_FEATURE_LEVEL_10_0,
+        D3D_FEATURE_LEVEL_11_1, // Recommend : DX11_1
+        D3D_FEATURE_LEVEL_11_0, // Minimum : DX11_0
     };
     UINT numFeatureLevels = ARRAYSIZE(featureLevels);
 
+    // Initialize Drivers in Priority Order
     for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++)
     {
         driverType = driverTypes[driverTypeIndex];
-        hr = D3D11CreateDevice(nullptr, driverType, nullptr, createDeviceFlags, featureLevels, numFeatureLevels, D3D11_SDK_VERSION, d3dDevice.GetAddressOf(), &featureLevel, d3dContext.GetAddressOf());
+
+        hr = D3D11CreateDevice(nullptr, driverType, nullptr, createDeviceFlags,
+            featureLevels, numFeatureLevels, D3D11_SDK_VERSION, d3dDevice.GetAddressOf(), &featureLevel, d3dContext.GetAddressOf());
         if (SUCCEEDED(hr)) {
             break;
         }
@@ -84,7 +94,7 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
         return hr;
     }
 
-    // Setting SwapChain
+    // Set SwapChain
     DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
     swapChainDesc.BufferCount = 1;
     swapChainDesc.BufferDesc.Width = width;
@@ -118,10 +128,10 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
         return hr;
     }
     
-    // Setting D3DRenderTarget
+    // Set D3DRenderTarget
     d3dContext->OMSetRenderTargets(1, d3dRenderTargetView.GetAddressOf(), nullptr);
 
-    // Setting ViewPort
+    // Set ViewPort
     D3D11_VIEWPORT viewPort = D3D11_VIEWPORT();
     viewPort.Width = static_cast<FLOAT>(width);
     viewPort.Height = static_cast<FLOAT>(height);
@@ -132,7 +142,7 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
 
     d3dContext->RSSetViewports(1, &viewPort);
 
-    // Setting Depth Stencil
+    // Set Depth Stencil
     D3D11_TEXTURE2D_DESC descDepth = {};
     descDepth.Width = width;
     descDepth.Height = height;
@@ -150,7 +160,7 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
         return hr;
     }
 
-    // Setting Depth Stencil View
+    // Set Depth Stencil View
     D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
     descDSV.Format = descDepth.Format;
     descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
@@ -161,11 +171,12 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
     }
     d3dContext->OMSetRenderTargets(1, d3dRenderTargetView.GetAddressOf(), depthStencilView.Get());
 
-    // Setting Primitive Type
+    // Set Primitive Type
     d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+    // Wire Frame Mode *Defined at pch.h*
 #ifdef _WIREFRAME
-    // Setting Rasterizer
+    // Set Rasterizer
     D3D11_RASTERIZER_DESC rasterDesc = {};
     rasterDesc.FillMode = D3D11_FILL_WIREFRAME;
     rasterDesc.CullMode = D3D11_CULL_NONE;
@@ -177,7 +188,7 @@ HRESULT Device::InitD3D11Device(HWND hWnd) {
         return hr;
     }
 
-    // Set Rasterizer
+    // Set Rasterizer State
     d3dContext->RSSetState(rasterState.Get());
 #endif // _WIREFRAME
 
@@ -210,23 +221,26 @@ HRESULT Device::InitD2DDevice(HWND hWnd) {
     }
 
     // Create D2DRenderTarget
+    // Get BackBuffer From Swap Chain
     WRL::ComPtr<IDXGISurface> backBuffer;
     hr = dxgiSwapChain->GetBuffer(0, __uuidof(IDXGISurface), reinterpret_cast<void**>(backBuffer.GetAddressOf()));
     if (FAILED(hr)) {
         return hr;
     }
 
+    // Options : Using This Bitmap to D2D Render Target and Can't Draw Bitmap Directly(Using DXGI Surface)
     const D2D1_BITMAP_PROPERTIES1 bitmapProperties = D2D1::BitmapProperties1(
         D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
-        D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_IGNORE)
+        D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED)
     );
 
+    // Get Renderable Surface From BackBuffer
     hr = d2dContext->CreateBitmapFromDxgiSurface(backBuffer.Get(), &bitmapProperties, d2dRenderTarget.GetAddressOf());
     if (FAILED(hr)) {
         return hr;
     }
 
-    // Setting D2D RenderTarget
+    // Set D2D RenderTarget
     d2dContext->SetTarget(d2dRenderTarget.Get());
 
     return S_OK;

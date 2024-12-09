@@ -14,6 +14,7 @@ Application::~Application() {
 }
 
 HRESULT Application::InitApplication() {
+	// Init WindowsAPI
 	if (window->InitWindow() != S_OK) {
 		std::wstring message = L"Init Window Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
@@ -25,6 +26,7 @@ HRESULT Application::InitApplication() {
 		return E_FAIL;
 	}
 
+	// Init DirectX Devices
 	if (device->InitD3D11Device(*window->getWindowHandle()) != S_OK) {
 		std::wstring message = L"InitD3DDevice Failed\n" + std::to_wstring(GetLastError());
 		MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
@@ -48,10 +50,12 @@ INT Application::DoMainLoop() {
 			DispatchMessage(&Message);
 		}
 		else {
+			// Update Framework State
 			window->WindowLoop();
 			InputManagerInstance->UpdateKeyState();
 			SceneManagerInstance->Update(getDeltaTime());
 
+			// Render Graphic Elements
 			device->RenderStart();
 			SceneManagerInstance->Render();
 			device->RenderEnd();
@@ -61,6 +65,7 @@ INT Application::DoMainLoop() {
 }
 
 HRESULT Application::InitManager() {
+	// Init System Managers
 	TextureManagerInstance->Init(device->getD2DContext().Get(), device->getD3DDevice().Get());
 	if (TextureManagerInstance->getInstance() == nullptr) {
 		std::wstring message = L"Init TextureManager Failed\n" + std::to_wstring(GetLastError());
@@ -96,22 +101,36 @@ HRESULT Application::InitManager() {
 		return E_FAIL;
 	}
 
+	// If Need More Managers, Add Them Below
+	// ManagerInstance->Init();
+	// if (ManagerInstance->getInstance() == nullptr) {
+	//	 std::wstring message = L"Init Manager Failed\n" + std::to_wstring(GetLastError());
+	//	 MessageBoxEx(nullptr, message.c_str(), PROGRAM_NAME, NULL, NULL);
+	//	 return E_FAIL;
+	// }
+
 	return S_OK;
 }
 
 void Application::InitDeltaTime() {
-	QueryPerformanceCounter(&beforeInterval);
-	QueryPerformanceCounter(&currentInterval);
-	QueryPerformanceFrequency(&frequency);
+	this->beforeInterval = std::make_unique<LARGE_INTEGER>();
+	this->currentInterval = std::make_unique<LARGE_INTEGER>();
+	this->frequency = std::make_unique<LARGE_INTEGER>();
+
+	QueryPerformanceCounter(beforeInterval.get());
+	QueryPerformanceCounter(currentInterval.get());
+	QueryPerformanceFrequency(frequency.get());
 }
 
 float Application::getDeltaTime() {
-	QueryPerformanceCounter(&currentInterval);
+	QueryPerformanceCounter(currentInterval.get());
 
-	LONGLONG interval = (currentInterval.QuadPart - beforeInterval.QuadPart);
-	float deltaTime = static_cast<float>(interval) / static_cast<float>(frequency.QuadPart);
+	LONGLONG interval = (currentInterval->QuadPart - beforeInterval->QuadPart);
+	// *WARNING* This Line May Happen 'Division by Zero' Problem
+	float deltaTime = static_cast<float>(interval) / static_cast<float>(frequency->QuadPart);
 
-	beforeInterval = currentInterval;
+	// Swap Memory R-Value to L-Value *Like 'beforeInterval = currentInterval'*
+	beforeInterval.swap(currentInterval);
 
 	return deltaTime;
 }

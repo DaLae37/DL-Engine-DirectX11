@@ -15,7 +15,7 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
-	case WM_CLOSE:
+	case WM_CLOSE: // Click Exit Button
 		if (MessageBoxEx(hWnd, L"Exit Program?", PROGRAM_NAME, MB_OKCANCEL, NULL) == IDOK) {
 			DestroyWindow(hWnd);
 		}
@@ -29,17 +29,17 @@ HRESULT Window::InitWindow() {
 	WNDCLASSEX wndClass = WNDCLASSEX();
 
 	wndClass.cbSize = sizeof(WNDCLASSEX);
-	wndClass.style = CS_HREDRAW | CS_VREDRAW;
-	wndClass.lpfnWndProc = WndProc;
-	wndClass.cbClsExtra = 0;
-	wndClass.cbWndExtra = 0;
+	wndClass.style = CS_HREDRAW | CS_VREDRAW; // Re-Draw Entire Window If Size Changed
+	wndClass.lpfnWndProc = WndProc; // Window::WndProc
+	wndClass.cbClsExtra = 0; // No Additional Memory Required
+	wndClass.cbWndExtra = 0; // No Additional Memory Required
 	wndClass.hInstance = this->hInstance;
 	wndClass.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
-	wndClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
-	wndClass.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
-	wndClass.lpszMenuName = nullptr;
-	wndClass.lpszClassName = PROGRAM_NAME;
 	wndClass.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
+	wndClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wndClass.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1); // Using Default Window Background Color
+	wndClass.lpszMenuName = nullptr; // Set Resource Name
+	wndClass.lpszClassName = PROGRAM_NAME;
 	
 	RegisterClassEx(&wndClass);
 	
@@ -52,10 +52,11 @@ HRESULT Window::InitWindow() {
 }
 
 HRESULT Window::FloatWindow() {
-	this->hWnd = CreateWindowEx(WS_EX_APPWINDOW, PROGRAM_NAME, PROGRAM_NAME,
-		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+	this->hWnd = CreateWindowEx(WS_EX_APPWINDOW, // Extension Style
+		PROGRAM_NAME, PROGRAM_NAME, WS_OVERLAPPEDWINDOW, // Class Name, Title, Window Style
+		CW_USEDEFAULT, CW_USEDEFAULT, // Window Position
 		DEFAULT_WIDTH, DEFAULT_HEIGHT,
-		nullptr, nullptr, hInstance, nullptr);
+		nullptr, nullptr, hInstance, nullptr); // Parent Handle, Menu Handle, Application Handle, Additional Data
 
 	ShowWindow(this->hWnd, nCmdShow);
 
@@ -68,7 +69,7 @@ HRESULT Window::FloatWindow() {
 }
 
 void Window::WindowLoop() {
-	
+	// TODO : 윈도우 창 관련 동작 추가
 }
 
 HWND* Window::getWindowHandle() {
