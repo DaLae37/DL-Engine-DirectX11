@@ -46,7 +46,7 @@ INT Application::DoMainLoop() {
 
 	while (Message.message != WM_QUIT) {
 		if (PeekMessage(&Message, nullptr, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&Message);	
+			TranslateMessage(&Message);
 			DispatchMessage(&Message);
 		}
 		else {

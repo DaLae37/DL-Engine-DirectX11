@@ -2,14 +2,14 @@
 #include "pch.h"
 
 class Window {
-private :
+private:
 	HINSTANCE hInstance;
 	INT nCmdShow;
 
 	// Windows Handler
 	HWND hWnd;
 
-public :
+public:
 	Window() = delete;
 	Window(HINSTANCE hInstance, INT nCmdShow);
 	~Window();
@@ -24,5 +24,5 @@ public :
 
 	void WindowLoop();
 	// Get WindowsHandler Pointer
-	HWND *getWindowHandle();
+	HWND* getWindowHandle();
 };

@@ -7,7 +7,7 @@ Window::Window(HINSTANCE hInstance, INT nCmdShow) {
 }
 
 Window::~Window() {
-	
+
 }
 
 LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -40,9 +40,9 @@ HRESULT Window::InitWindow() {
 	wndClass.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1); // Using Default Window Background Color
 	wndClass.lpszMenuName = nullptr; // Set Resource Name
 	wndClass.lpszClassName = PROGRAM_NAME;
-	
+
 	RegisterClassEx(&wndClass);
-	
+
 	if (GetLastError() != 0) {
 		return E_FAIL;
 	}

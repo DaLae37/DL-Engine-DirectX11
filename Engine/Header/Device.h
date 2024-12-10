@@ -2,7 +2,7 @@
 #include "pch.h"
 
 class Device {
-private :
+private:
 	// DXGI Devices
 	WRL::ComPtr<IDXGIDevice> dxgiDevice = nullptr;
 	WRL::ComPtr<IDXGISwapChain> dxgiSwapChain = nullptr;
@@ -23,7 +23,7 @@ private :
 	WRL::ComPtr<ID2D1DeviceContext> d2dContext = nullptr;
 	WRL::ComPtr<ID2D1Bitmap1> d2dRenderTarget = nullptr;
 
-public :
+public:
 	Device();
 	~Device();
 

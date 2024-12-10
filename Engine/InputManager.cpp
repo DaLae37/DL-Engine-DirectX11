@@ -19,6 +19,7 @@ void InputManager::Init(HWND* hWnd) {
 void InputManager::UpdateKeyState() {
 	for (int i = 0; i < NUM_KEY; i++) {
 		beforeKey[i] = currentKey[i];
+		// Check the i-th Top Bit
 		currentKey[i] = GetAsyncKeyState(i) & 0x8000;
 	}
 }
@@ -38,10 +39,10 @@ int InputManager::GetKeyState(int vk) {
 	}
 }
 
-POINT InputManager::GetMousePos() {
-	POINT p;
-	GetCursorPos(&p);
-	ScreenToClient(*hWnd, &p);
-	
-	return p;
+POINT InputManager::GetMousePosition() {
+	POINT point;
+	GetCursorPos(&point);
+	ScreenToClient(*hWnd, &point);
+
+	return point;
 }

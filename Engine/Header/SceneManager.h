@@ -5,26 +5,33 @@
 #define SceneManagerInstance SceneManager::getInstance()
 
 class SceneManager {
-private :
+private:
+	// Singleton Pattern Safety
 	SceneManager() = default;
+	// Remove Copy Constructor
 	SceneManager(const SceneManager&) = delete;
+	// Remove Substitution Operator
 	SceneManager& operator=(const SceneManager&) = delete;
 
+	Scene* currentScene = nullptr;
+
+	// When Instance is Initialized, Changed to true
 	bool isInit = false;
 
-	Scene *currentScene = nullptr;
-	
-	// Get raw pointer from device
+	// Get Raw Pointer from Device
 	ID2D1DeviceContext* d2dContext = nullptr;
 	ID3D11DeviceContext* d3dContext = nullptr;
-public :
+
+public:
 	~SceneManager();
 
+	// Get SceneManger's Instances
 	static SceneManager* getInstance();
 
 	void Update(float dTime);
-	void Render();	
+	void Render();
 
+	// Initialize SceneManger Instance *Must Called Before Using Any Functions*
 	void Init(ID3D11DeviceContext* d3dContext, ID2D1DeviceContext* d2dContext);
 	void ChangeScene(Scene* nextScene);
 };

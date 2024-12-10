@@ -54,16 +54,17 @@ HRESULT ShaderManager::CompileShaderFromFile(const wchar_t* path, const char* en
 	hr = D3DCompileFromFile(
 		static_cast<LPCWSTR>(path), // Shader File Name
 		nullptr, // Shader Macros
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // Include Files
+		D3D_COMPILE_STANDARD_FILE_INCLUDE, // Using HLSLI Files in HLSL
 		static_cast<LPCSTR>(entryPoint), // Entry Point
 		static_cast<LPCSTR>(shaderModel), // Shader Target
 		dwShaderFlags, // Flag1
 		0, // Flag2
-		shaderBlob, // ID3DBlob out 
-		errorBlob.GetAddressOf() // Error Blob out
+		shaderBlob, // ID3DBlob
+		errorBlob.GetAddressOf() // Error Blob
 	);
 	if (FAILED(hr)) {
 		if (errorBlob != nullptr) {
+			// Output Error Message to Debug Window When Error Occurs
 			OutputDebugStringA(static_cast<LPCSTR>(errorBlob->GetBufferPointer()));
 			SAFE_RELEASE(errorBlob);
 		}
